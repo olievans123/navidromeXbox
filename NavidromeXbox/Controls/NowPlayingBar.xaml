@@ -1,0 +1,71 @@
+<UserControl
+    x:Class="NavidromeXbox.Controls.NowPlayingBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:helpers="using:NavidromeXbox.Helpers"
+    x:Name="Root">
+
+    <UserControl.Resources>
+        <helpers:BoolToVisibilityConverter x:Key="BoolVis" />
+    </UserControl.Resources>
+
+    <Border x:Name="BarRoot" Background="{StaticResource AppSurfaceBrush}" BorderThickness="0,1,0,0"
+            BorderBrush="{StaticResource HairlineBrush}"
+            Visibility="{Binding HasCurrent, Converter={StaticResource BoolVis}}">
+        <Grid Padding="20,10" ColumnSpacing="18">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Tappable now-playing summary → opens the full screen -->
+            <Button Grid.Row="0" Grid.Column="0" x:Name="InfoButton" Click="Info_Click"
+                    Style="{StaticResource IconButton}" HorizontalContentAlignment="Left"
+                    Background="Transparent" Padding="6" CornerRadius="10">
+                <StackPanel Orientation="Horizontal" Spacing="14">
+                    <Border Width="52" Height="52" CornerRadius="8" Background="{StaticResource AppSurfaceHighBrush}">
+                        <Image Source="{Binding CurrentSong.CoverArtUri}" Stretch="UniformToFill" />
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding CurrentSong.Title}" FontSize="{StaticResource BodySize}" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" MaxWidth="520" />
+                        <TextBlock Text="{Binding CurrentSong.ArtistAndAlbum}" FontSize="{StaticResource CaptionSize}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" TextTrimming="CharacterEllipsis" MaxWidth="520" />
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+
+            <!-- Transport -->
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <Button x:Name="ShuffleBtn" Style="{StaticResource IconButton}" Width="44" Height="44" CornerRadius="22"
+                        FontSize="16" Content="&#xE8B1;" Click="Shuffle_Click" ToolTipService.ToolTip="Shuffle" />
+                <Button x:Name="PrevBtn" Style="{StaticResource IconButton}" Width="46" Height="46" CornerRadius="23"
+                        FontSize="18" Content="&#xE892;" Click="Prev_Click" ToolTipService.ToolTip="Previous" />
+                <Button x:Name="PlayBtn" Style="{StaticResource TransportButton}"
+                        Content="{Binding PlayPauseGlyph}" Click="PlayPause_Click" ToolTipService.ToolTip="Play / Pause" />
+                <Button x:Name="NextBtn" Style="{StaticResource IconButton}" Width="46" Height="46" CornerRadius="23"
+                        FontSize="18" Content="&#xE893;" Click="Next_Click" ToolTipService.ToolTip="Next" />
+                <Button x:Name="RepeatBtn" Style="{StaticResource IconButton}" Width="44" Height="44" CornerRadius="22"
+                        FontSize="16" Content="{Binding RepeatGlyph}" Click="Repeat_Click" ToolTipService.ToolTip="Repeat" />
+            </StackPanel>
+
+            <!-- Time + full screen -->
+            <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                <TextBlock x:Name="TimeText" VerticalAlignment="Center" FontSize="{StaticResource CaptionSize}"
+                           Foreground="{StaticResource TextSecondaryBrush}" />
+                <Button x:Name="ExpandBtn" Style="{StaticResource IconButton}" Width="44" Height="44" CornerRadius="22"
+                        FontSize="16" Content="&#xE740;" Click="Info_Click" ToolTipService.ToolTip="Full screen" />
+            </StackPanel>
+
+            <!-- Progress -->
+            <ProgressBar Grid.Row="1" Grid.ColumnSpan="3" x:Name="Progress" Margin="6,8,6,0" Height="4"
+                         Minimum="0" Maximum="{Binding DurationSeconds}" Value="{Binding PositionSeconds}"
+                         Foreground="{StaticResource AccentBrush}" Background="#33FFFFFF" />
+        </Grid>
+    </Border>
+</UserControl>

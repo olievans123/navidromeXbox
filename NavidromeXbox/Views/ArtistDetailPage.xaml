@@ -1,0 +1,67 @@
+<Page
+    x:Class="NavidromeXbox.Views.ArtistDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="56,28,40,28">
+            <StackPanel>
+                <!-- Hero -->
+                <Grid ColumnSpacing="28" Margin="0,0,0,18">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Width="200" Height="200" CornerRadius="100" Background="{StaticResource AppSurfaceHighBrush}">
+                        <Grid>
+                            <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" FontSize="56" Foreground="#33FFFFFF"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Image x:Name="ArtistImage" Stretch="UniformToFill" />
+                        </Grid>
+                    </Border>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Spacing="6">
+                        <TextBlock x:Name="NameText" FontSize="{StaticResource DisplaySize}" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" MaxLines="2" />
+                        <TextBlock x:Name="CountText" FontSize="{StaticResource BodySize}" Foreground="{StaticResource TextSecondaryBrush}" />
+                        <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,12,0,0">
+                            <Button x:Name="PlayButton" Style="{StaticResource PrimaryButton}" Click="Play_Click" Padding="28,14">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="18" />
+                                    <TextBlock Text="Play" FontFamily="Segoe UI" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="ShuffleButton" Style="{StaticResource TileButton}" Click="Shuffle_Click" Padding="24,14">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <TextBlock Text="&#xE8B1;" FontFamily="Segoe MDL2 Assets" FontSize="18" />
+                                    <TextBlock Text="Shuffle" FontFamily="Segoe UI" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Bio -->
+                <TextBlock x:Name="BioText" FontSize="{StaticResource BodySize}" Foreground="{StaticResource TextSecondaryBrush}"
+                           TextWrapping="Wrap" MaxLines="5" TextTrimming="CharacterEllipsis" Margin="2,0,2,8"
+                           Visibility="Collapsed" />
+
+                <!-- Albums -->
+                <TextBlock Text="Albums" FontSize="{StaticResource SubtitleSize}" FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimaryBrush}" Margin="2,18,0,10" />
+                <GridView x:Name="AlbumsGrid" IsItemClickEnabled="True" SelectionMode="None" ItemClick="Album_Click"
+                          ItemTemplate="{StaticResource AlbumTileTemplate}" />
+
+                <!-- Top songs -->
+                <StackPanel x:Name="TopSongsSection">
+                    <TextBlock Text="Popular tracks" FontSize="{StaticResource SubtitleSize}" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" Margin="2,18,0,10" />
+                    <ListView x:Name="TopSongs" IsItemClickEnabled="True" SelectionMode="None" ItemClick="Song_Click"
+                              ItemTemplate="{StaticResource SongRowTemplate}" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <ProgressRing x:Name="Busy" Width="44" Height="44" IsActive="True"
+                      Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Grid>
+</Page>

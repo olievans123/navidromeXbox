@@ -1,0 +1,31 @@
+<Page
+    x:Class="NavidromeXbox.Views.QueuePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Padding="56,28,40,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="Queue" FontSize="{StaticResource TitleSize}" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" />
+            <Button x:Name="ClearButton" HorizontalAlignment="Right" VerticalAlignment="Center"
+                    Style="{StaticResource TileButton}" Click="Clear_Click" Padding="20,12">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="16" />
+                    <TextBlock Text="Clear" FontFamily="Segoe UI" />
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <ListView Grid.Row="1" x:Name="QueueList" IsItemClickEnabled="True" SelectionMode="None"
+                  ItemClick="Song_Click" ItemTemplate="{StaticResource SongRowTemplate}" />
+
+        <TextBlock x:Name="EmptyText" Grid.Row="1" Text="The queue is empty.&#x0a;Play an album or playlist to fill it."
+                   Foreground="{StaticResource TextSecondaryBrush}" FontSize="{StaticResource BodySize}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Visibility="Collapsed" />
+    </Grid>
+</Page>

@@ -1,0 +1,86 @@
+<Page
+    x:Class="NavidromeXbox.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Padding="56,28,40,16">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel MaxWidth="780" Spacing="18">
+                <TextBlock Text="Settings" FontSize="{StaticResource TitleSize}" FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimaryBrush}" />
+
+                <!-- Account -->
+                <Border Style="{StaticResource CardBorder}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Connection" FontSize="{StaticResource SubtitleSize}" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" />
+                        <TextBlock x:Name="ServerText" FontSize="{StaticResource BodySize}" Foreground="{StaticResource TextPrimaryBrush}" />
+                        <TextBlock x:Name="UserText" FontSize="{StaticResource CaptionSize}" Foreground="{StaticResource TextSecondaryBrush}" />
+                        <TextBlock x:Name="VersionText" FontSize="{StaticResource CaptionSize}" Foreground="{StaticResource TextSecondaryBrush}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Playback -->
+                <Border Style="{StaticResource CardBorder}">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Streaming &amp; playback" FontSize="{StaticResource SubtitleSize}" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" />
+
+                        <Grid>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Maximum bitrate" FontSize="{StaticResource BodySize}" Foreground="{StaticResource TextPrimaryBrush}" />
+                                <TextBlock Text="Lower this on slower connections; the server transcodes on the fly."
+                                           FontSize="{StaticResource CaptionSize}" Foreground="{StaticResource TextSecondaryBrush}" />
+                            </StackPanel>
+                            <ComboBox x:Name="BitrateBox" HorizontalAlignment="Right" MinWidth="200"
+                                      Style="{StaticResource ThemedComboBox}" SelectionChanged="Setting_Changed">
+                                <ComboBoxItem Content="Original (no limit)" Tag="0" />
+                                <ComboBoxItem Content="320 kbps" Tag="320" />
+                                <ComboBoxItem Content="256 kbps" Tag="256" />
+                                <ComboBoxItem Content="192 kbps" Tag="192" />
+                                <ComboBoxItem Content="128 kbps" Tag="128" />
+                                <ComboBoxItem Content="96 kbps" Tag="96" />
+                            </ComboBox>
+                        </Grid>
+
+                        <Grid>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Transcode format" FontSize="{StaticResource BodySize}" Foreground="{StaticResource TextPrimaryBrush}" />
+                                <TextBlock Text="Leave on Original unless a codec won't play."
+                                           FontSize="{StaticResource CaptionSize}" Foreground="{StaticResource TextSecondaryBrush}" />
+                            </StackPanel>
+                            <ComboBox x:Name="FormatBox" HorizontalAlignment="Right" MinWidth="200"
+                                      Style="{StaticResource ThemedComboBox}" SelectionChanged="Setting_Changed">
+                                <ComboBoxItem Content="Original" Tag="raw" />
+                                <ComboBoxItem Content="MP3" Tag="mp3" />
+                                <ComboBoxItem Content="Opus" Tag="opus" />
+                                <ComboBoxItem Content="AAC" Tag="aac" />
+                            </ComboBox>
+                        </Grid>
+
+                        <Grid>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Scrobble plays" FontSize="{StaticResource BodySize}" Foreground="{StaticResource TextPrimaryBrush}" />
+                                <TextBlock Text="Report listens back to Navidrome (and any connected Last.fm / ListenBrainz)."
+                                           FontSize="{StaticResource CaptionSize}" Foreground="{StaticResource TextSecondaryBrush}" />
+                            </StackPanel>
+                            <ToggleSwitch x:Name="ScrobbleToggle" HorizontalAlignment="Right" Toggled="Setting_Changed" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Button x:Name="SignOutButton" Style="{StaticResource TileButton}" Click="SignOut_Click"
+                        HorizontalContentAlignment="Center" Foreground="{StaticResource ErrorBrush}" Margin="0,4,0,24">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="&#xF3B1;" FontFamily="Segoe MDL2 Assets" FontSize="18" />
+                        <TextBlock Text="Sign out" FontFamily="Segoe UI" FontWeight="SemiBold" />
+                    </StackPanel>
+                </Button>
+
+                <TextBlock Text="Navidrome for Xbox — a native Subsonic/OpenSubsonic client."
+                           FontSize="{StaticResource CaptionSize}" Foreground="{StaticResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center" />
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

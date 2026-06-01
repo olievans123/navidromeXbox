@@ -1,0 +1,39 @@
+<Page
+    x:Class="NavidromeXbox.Views.ArtistsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Padding="56,28,40,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Artists" FontSize="{StaticResource TitleSize}" FontWeight="Bold"
+                   Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12" />
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="IndexHost">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,0,0,18">
+                            <Border Background="{StaticResource AppSurfaceHighBrush}" CornerRadius="8"
+                                    Padding="14,4" HorizontalAlignment="Left" Margin="0,0,0,8">
+                                <TextBlock Text="{Binding Key}" FontSize="{StaticResource SubtitleSize}" FontWeight="Bold"
+                                           Foreground="{StaticResource AccentLightBrush}" />
+                            </Border>
+                            <GridView ItemsSource="{Binding Items}" IsItemClickEnabled="True" SelectionMode="None"
+                                      ItemClick="Artist_Click" ItemTemplate="{StaticResource ArtistTileTemplate}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <ProgressRing x:Name="Busy" Grid.Row="1" Width="44" Height="44" IsActive="True"
+                      Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <TextBlock x:Name="EmptyText" Grid.Row="1" Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="{StaticResource BodySize}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Visibility="Collapsed" TextAlignment="Center" Margin="40" />
+    </Grid>
+</Page>

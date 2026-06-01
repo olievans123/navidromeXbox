@@ -1,0 +1,91 @@
+<Page
+    x:Class="NavidromeXbox.Views.NowPlayingPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Padding="56,24,40,16">
+        <Grid x:Name="PlayerRoot">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Art + info -->
+            <Grid Grid.Row="0" VerticalAlignment="Center">
+                <StackPanel Spacing="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Border Width="380" Height="380" CornerRadius="20" Background="{StaticResource AppSurfaceHighBrush}"
+                            HorizontalAlignment="Center">
+                        <Grid>
+                            <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="96" Foreground="#33FFFFFF"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Image x:Name="CoverImage" Stretch="UniformToFill" />
+                        </Grid>
+                    </Border>
+                    <StackPanel HorizontalAlignment="Center" Spacing="4" MaxWidth="760">
+                        <TextBlock x:Name="TitleText" FontSize="{StaticResource TitleSize}" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" TextAlignment="Center"
+                                   TextTrimming="CharacterEllipsis" MaxLines="2" />
+                        <TextBlock x:Name="ArtistText" FontSize="{StaticResource SubtitleSize}"
+                                   Foreground="{StaticResource AccentLightBrush}" TextAlignment="Center"
+                                   TextTrimming="CharacterEllipsis" MaxLines="1" />
+                        <TextBlock x:Name="AlbumText" FontSize="{StaticResource BodySize}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" TextAlignment="Center"
+                                   TextTrimming="CharacterEllipsis" MaxLines="1" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <!-- Controls -->
+            <StackPanel Grid.Row="1" Spacing="6" Margin="40,12,40,8" MaxWidth="1000" HorizontalAlignment="Stretch">
+                <Grid ColumnSpacing="14">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" x:Name="PosText" Text="0:00" VerticalAlignment="Center"
+                               FontSize="{StaticResource CaptionSize}" Foreground="{StaticResource TextSecondaryBrush}" />
+                    <Slider Grid.Column="1" x:Name="SeekSlider" Minimum="0" Maximum="100" StepFrequency="1"
+                            SmallChange="5" LargeChange="15" ValueChanged="Seek_ValueChanged"
+                            Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="2" x:Name="DurText" Text="0:00" VerticalAlignment="Center"
+                               FontSize="{StaticResource CaptionSize}" Foreground="{StaticResource TextSecondaryBrush}" />
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" Spacing="16" HorizontalAlignment="Center" Margin="0,4,0,0">
+                    <Button x:Name="ShuffleBtn" Style="{StaticResource IconButton}" Width="52" Height="52" CornerRadius="26"
+                            FontSize="18" Content="&#xE8B1;" Click="Shuffle_Click" ToolTipService.ToolTip="Shuffle" />
+                    <Button x:Name="PrevBtn" Style="{StaticResource TransportButton}" FontSize="22"
+                            Content="&#xE892;" Click="Prev_Click" ToolTipService.ToolTip="Previous" />
+                    <Button x:Name="PlayBtn" Style="{StaticResource TransportButton}" Width="72" Height="72" CornerRadius="36"
+                            FontSize="26" Background="{StaticResource AccentBrush}" Foreground="#06201E"
+                            Click="PlayPause_Click" ToolTipService.ToolTip="Play / Pause" />
+                    <Button x:Name="NextBtn" Style="{StaticResource TransportButton}" FontSize="22"
+                            Content="&#xE893;" Click="Next_Click" ToolTipService.ToolTip="Next" />
+                    <Button x:Name="RepeatBtn" Style="{StaticResource IconButton}" Width="52" Height="52" CornerRadius="26"
+                            FontSize="18" Click="Repeat_Click" ToolTipService.ToolTip="Repeat" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="16" HorizontalAlignment="Center" Margin="0,6,0,0">
+                    <Button x:Name="StarBtn" Style="{StaticResource IconButton}" Width="48" Height="48" CornerRadius="24"
+                            FontSize="18" Click="Star_Click" Foreground="{StaticResource AccentMagentaBrush}"
+                            ToolTipService.ToolTip="Star" />
+                    <Button x:Name="QueueBtn" Style="{StaticResource IconButton}" Width="48" Height="48" CornerRadius="24"
+                            FontSize="18" Content="&#xE90B;" Click="Queue_Click" ToolTipService.ToolTip="Queue" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <!-- Empty state -->
+        <StackPanel x:Name="EmptyState" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12" Visibility="Collapsed">
+            <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="72" Foreground="#33FFFFFF" HorizontalAlignment="Center" />
+            <TextBlock Text="Nothing playing" FontSize="{StaticResource TitleSize}" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}" HorizontalAlignment="Center" />
+            <TextBlock Text="Pick an album, playlist, or song to start listening."
+                       FontSize="{StaticResource BodySize}" Foreground="{StaticResource TextSecondaryBrush}"
+                       HorizontalAlignment="Center" TextAlignment="Center" />
+            <Button Content="Browse albums" Style="{StaticResource PrimaryButton}" Click="Browse_Click"
+                    HorizontalAlignment="Center" Margin="0,8,0,0" />
+        </StackPanel>
+    </Grid>
+</Page>
