@@ -164,8 +164,8 @@ namespace NavidromeXbox.Services
         /// <summary>Insert right after the current track.</summary>
         public void PlayNext(Song song)
         {
-            int at = (int)(_list.CurrentItemIndex == uint.MaxValue ? _list.Items.Count - 1 : _list.CurrentItemIndex) + 1;
-            at = Math.Max(0, Math.Min(at, _list.Items.Count));
+            int cur = _list.CurrentItemIndex == uint.MaxValue ? _list.Items.Count - 1 : (int)_list.CurrentItemIndex;
+            int at = Math.Max(0, Math.Min(cur + 1, _list.Items.Count));
             _songs.Insert(at, song);
             Queue.Insert(at, song);
             _list.Items.Insert(at, BuildItem(song));

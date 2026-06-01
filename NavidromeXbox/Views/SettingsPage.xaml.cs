@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NavidromeXbox.Services;
 using Windows.UI.Xaml;
