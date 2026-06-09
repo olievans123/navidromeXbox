@@ -96,7 +96,11 @@ namespace NavidromeXbox.Models
         public bool Starred { get; set; }
         public int? Rating { get; set; }
 
-        public string DurationText => Format.Duration(DurationSeconds);
+        /// <summary>For internet radio: a ready-to-play URL used instead of the /rest/stream endpoint.</summary>
+        public string StreamOverride { get; set; }
+        public bool IsRadio => !string.IsNullOrEmpty(StreamOverride);
+
+        public string DurationText => IsRadio ? "Live" : Format.Duration(DurationSeconds);
         public string TrackText => Track.HasValue && Track > 0 ? Track.Value.ToString() : "•";
         public string ArtistAndAlbum =>
             string.IsNullOrEmpty(AlbumName) ? ArtistName : $"{ArtistName}  —  {AlbumName}";
@@ -123,6 +127,15 @@ namespace NavidromeXbox.Models
                 return string.Join("  •  ", parts);
             }
         }
+    }
+
+    /// <summary>A user-configured internet radio station (getInternetRadioStations).</summary>
+    public class RadioStation
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string StreamUrl { get; set; }
+        public string HomepageUrl { get; set; }
     }
 
     public class Genre

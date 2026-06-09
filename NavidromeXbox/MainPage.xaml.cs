@@ -38,8 +38,20 @@ namespace NavidromeXbox
             }
             else
             {
+                ApplyNavCustomization();
                 GoTo("home");
             }
+        }
+
+        /// <summary>Show or hide the optional nav sections per the user's Settings choices.</summary>
+        public void ApplyNavCustomization()
+        {
+            AlbumsNav.Visibility = Settings.NavAlbums ? Visibility.Visible : Visibility.Collapsed;
+            ArtistsNav.Visibility = Settings.NavArtists ? Visibility.Visible : Visibility.Collapsed;
+            PlaylistsNav.Visibility = Settings.NavPlaylists ? Visibility.Visible : Visibility.Collapsed;
+            GenresNav.Visibility = Settings.NavGenres ? Visibility.Visible : Visibility.Collapsed;
+            RadioNav.Visibility = Settings.NavRadio ? Visibility.Visible : Visibility.Collapsed;
+            SearchNav.Visibility = Settings.NavSearch ? Visibility.Visible : Visibility.Collapsed;
         }
 
         void OnBackRequested(object sender, BackRequestedEventArgs e)
@@ -83,6 +95,7 @@ namespace NavidromeXbox
 
         void SetPane(bool open)
         {
+            if (open) ApplyNavCustomization();   // reflect any customization changed in Settings
             NavSplit.IsPaneOpen = open;
             if (open) FocusActiveNav();
             else MenuButton.Focus(FocusState.Programmatic);
@@ -96,8 +109,9 @@ namespace NavidromeXbox
 
         void FocusActiveNav()
         {
-            var btn = NavItems.Children.OfType<Button>().FirstOrDefault(b => (b.Tag as string) == _currentTag)
-                      ?? NavItems.Children.OfType<Button>().FirstOrDefault();
+            bool Visible(Button b) => b.Visibility == Visibility.Visible;
+            var btn = NavItems.Children.OfType<Button>().FirstOrDefault(b => Visible(b) && (b.Tag as string) == _currentTag)
+                      ?? NavItems.Children.OfType<Button>().FirstOrDefault(Visible);
             btn?.Focus(FocusState.Programmatic);
         }
 
@@ -125,6 +139,7 @@ namespace NavidromeXbox
         public void OnSignedIn()
         {
             MenuButton.Visibility = Visibility.Visible;
+            ApplyNavCustomization();
             GoTo("home");
             ContentFrame.BackStack.Clear();   // B from Home shouldn't land back on the login form
         }
@@ -153,6 +168,7 @@ namespace NavidromeXbox
                 case "artists": ContentFrame.Navigate(typeof(ArtistsPage)); break;
                 case "playlists": ContentFrame.Navigate(typeof(PlaylistsPage)); break;
                 case "genres": ContentFrame.Navigate(typeof(GenresPage)); break;
+                case "radio": ContentFrame.Navigate(typeof(RadioPage)); break;
                 case "search": ContentFrame.Navigate(typeof(SearchPage)); break;
                 case "nowplaying": ContentFrame.Navigate(typeof(NowPlayingPage)); break;
                 case "queue": ContentFrame.Navigate(typeof(QueuePage)); break;

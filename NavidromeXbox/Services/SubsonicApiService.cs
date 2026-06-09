@@ -304,6 +304,25 @@ namespace NavidromeXbox.Services
 
         public Task DeletePlaylistAsync(string id) => Rest("deletePlaylist", "&id=" + Uri.EscapeDataString(id));
 
+        // ----------------------------------------------------------- internet radio
+
+        public async Task<List<RadioStation>> GetInternetRadioStationsAsync()
+        {
+            var sr = await Rest("getInternetRadioStations");
+            var list = new List<RadioStation>();
+            foreach (var s in Many(sr["internetRadioStations"], "internetRadioStation"))
+            {
+                list.Add(new RadioStation
+                {
+                    Id = s.Value<string>("id"),
+                    Name = s.Value<string>("name"),
+                    StreamUrl = s.Value<string>("streamUrl"),
+                    HomepageUrl = s.Value<string>("homePageUrl") ?? s.Value<string>("homepageUrl"),
+                });
+            }
+            return list;
+        }
+
         // ----------------------------------------------------------- search & starred
 
         public async Task<SearchResults> Search3Async(string query, int count = 20)

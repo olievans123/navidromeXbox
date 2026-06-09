@@ -18,12 +18,26 @@ namespace NavidromeXbox.Views
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            _ready = false;
             ServerText.Text = Settings.ServerUrl;
             UserText.Text = "Signed in as " + Settings.Username;
 
             SelectByTag(BitrateBox, Settings.MaxBitRate.ToString());
             SelectByTag(FormatBox, string.IsNullOrEmpty(Settings.TranscodeFormat) ? "raw" : Settings.TranscodeFormat);
             ScrobbleToggle.IsOn = Settings.ScrobbleEnabled;
+
+            HomeNewestToggle.IsOn = Settings.HomeNewest;
+            HomeRecentToggle.IsOn = Settings.HomeRecent;
+            HomeFrequentToggle.IsOn = Settings.HomeFrequent;
+            HomeRandomToggle.IsOn = Settings.HomeRandom;
+            HomeStarredToggle.IsOn = Settings.HomeStarred;
+
+            NavAlbumsToggle.IsOn = Settings.NavAlbums;
+            NavArtistsToggle.IsOn = Settings.NavArtists;
+            NavPlaylistsToggle.IsOn = Settings.NavPlaylists;
+            NavGenresToggle.IsOn = Settings.NavGenres;
+            NavRadioToggle.IsOn = Settings.NavRadio;
+            NavSearchToggle.IsOn = Settings.NavSearch;
             _ready = true;
 
             var user = await AppState.Current.EnsureUserAsync();
@@ -44,6 +58,27 @@ namespace NavidromeXbox.Views
             Settings.TranscodeFormat = (FormatBox.SelectedItem as ComboBoxItem)?.Tag as string ?? "raw";
             Settings.ScrobbleEnabled = ScrobbleToggle.IsOn;
             Settings.SavePlayback();
+        }
+
+        void Layout_Changed(object sender, RoutedEventArgs e)
+        {
+            if (!_ready) return;
+            Settings.HomeNewest = HomeNewestToggle.IsOn;
+            Settings.HomeRecent = HomeRecentToggle.IsOn;
+            Settings.HomeFrequent = HomeFrequentToggle.IsOn;
+            Settings.HomeRandom = HomeRandomToggle.IsOn;
+            Settings.HomeStarred = HomeStarredToggle.IsOn;
+
+            Settings.NavAlbums = NavAlbumsToggle.IsOn;
+            Settings.NavArtists = NavArtistsToggle.IsOn;
+            Settings.NavPlaylists = NavPlaylistsToggle.IsOn;
+            Settings.NavGenres = NavGenresToggle.IsOn;
+            Settings.NavRadio = NavRadioToggle.IsOn;
+            Settings.NavSearch = NavSearchToggle.IsOn;
+            Settings.SaveLayout();
+
+            // The side menu reflects changes immediately; Home re-reads on its next visit.
+            MainPage.Instance?.ApplyNavCustomization();
         }
 
         async void SignOut_Click(object sender, RoutedEventArgs e)

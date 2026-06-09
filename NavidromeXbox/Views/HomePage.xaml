@@ -41,17 +41,25 @@
                 <ProgressRing x:Name="Busy" Width="40" Height="40" IsActive="True" Margin="0,40,0,0"
                               HorizontalAlignment="Left" Foreground="{StaticResource AccentBrush}" />
 
-                <TextBlock Style="{StaticResource ShelfHeader}" Text="Recently added" />
-                <ListView x:Name="NewestShelf" Style="{StaticResource Shelf}" ItemTemplate="{StaticResource AlbumTileTemplate}" ItemClick="Album_Click" />
+                <StackPanel x:Name="NewestSection">
+                    <TextBlock Style="{StaticResource ShelfHeader}" Text="Recently added" />
+                    <ListView x:Name="NewestShelf" Style="{StaticResource Shelf}" ItemTemplate="{StaticResource AlbumTileTemplate}" ItemClick="Album_Click" />
+                </StackPanel>
 
-                <TextBlock Style="{StaticResource ShelfHeader}" Text="Recently played" />
-                <ListView x:Name="RecentShelf" Style="{StaticResource Shelf}" ItemTemplate="{StaticResource AlbumTileTemplate}" ItemClick="Album_Click" />
+                <StackPanel x:Name="RecentSection">
+                    <TextBlock Style="{StaticResource ShelfHeader}" Text="Recently played" />
+                    <ListView x:Name="RecentShelf" Style="{StaticResource Shelf}" ItemTemplate="{StaticResource AlbumTileTemplate}" ItemClick="Album_Click" />
+                </StackPanel>
 
-                <TextBlock Style="{StaticResource ShelfHeader}" Text="Most played" />
-                <ListView x:Name="FrequentShelf" Style="{StaticResource Shelf}" ItemTemplate="{StaticResource AlbumTileTemplate}" ItemClick="Album_Click" />
+                <StackPanel x:Name="FrequentSection">
+                    <TextBlock Style="{StaticResource ShelfHeader}" Text="Most played" />
+                    <ListView x:Name="FrequentShelf" Style="{StaticResource Shelf}" ItemTemplate="{StaticResource AlbumTileTemplate}" ItemClick="Album_Click" />
+                </StackPanel>
 
-                <TextBlock Style="{StaticResource ShelfHeader}" Text="Random picks" />
-                <ListView x:Name="RandomShelf" Style="{StaticResource Shelf}" ItemTemplate="{StaticResource AlbumTileTemplate}" ItemClick="Album_Click" />
+                <StackPanel x:Name="RandomSection">
+                    <TextBlock Style="{StaticResource ShelfHeader}" Text="Random picks" />
+                    <ListView x:Name="RandomShelf" Style="{StaticResource Shelf}" ItemTemplate="{StaticResource AlbumTileTemplate}" ItemClick="Album_Click" />
+                </StackPanel>
 
                 <StackPanel x:Name="StarredSection">
                     <TextBlock Style="{StaticResource ShelfHeader}" Text="Starred albums" />

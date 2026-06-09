@@ -31,8 +31,25 @@ namespace NavidromeXbox.Services
         public static bool ScrobbleEnabled { get; set; }
         public static bool GaplessEnabled { get; set; }
 
+        // ---- home screen layout (which shelves appear, default all on) ----
+        public static bool HomeNewest { get; set; }
+        public static bool HomeRecent { get; set; }
+        public static bool HomeFrequent { get; set; }
+        public static bool HomeRandom { get; set; }
+        public static bool HomeStarred { get; set; }
+
+        // ---- side menu layout (which optional sections appear, default all on) ----
+        public static bool NavAlbums { get; set; }
+        public static bool NavArtists { get; set; }
+        public static bool NavPlaylists { get; set; }
+        public static bool NavGenres { get; set; }
+        public static bool NavRadio { get; set; }
+        public static bool NavSearch { get; set; }
+
         public static bool HasServer => !string.IsNullOrWhiteSpace(ServerUrl) && !string.IsNullOrWhiteSpace(Username);
         public static bool HasCredentials => HasServer && !string.IsNullOrEmpty(Password);
+
+        static bool GetBool(string key, bool dflt) => Local.Values[key] is bool b ? b : dflt;
 
         public static void Load()
         {
@@ -40,8 +57,22 @@ namespace NavidromeXbox.Services
             Username = Local.Values["Username"] as string ?? "";
             MaxBitRate = Local.Values["MaxBitRate"] is int mb ? mb : 0;
             TranscodeFormat = Local.Values["TranscodeFormat"] as string ?? "raw";
-            ScrobbleEnabled = Local.Values["ScrobbleEnabled"] is bool sc ? sc : true;
-            GaplessEnabled = Local.Values["GaplessEnabled"] is bool gp ? gp : true;
+            ScrobbleEnabled = GetBool("ScrobbleEnabled", true);
+            GaplessEnabled = GetBool("GaplessEnabled", true);
+
+            HomeNewest = GetBool("HomeNewest", true);
+            HomeRecent = GetBool("HomeRecent", true);
+            HomeFrequent = GetBool("HomeFrequent", true);
+            HomeRandom = GetBool("HomeRandom", true);
+            HomeStarred = GetBool("HomeStarred", true);
+
+            NavAlbums = GetBool("NavAlbums", true);
+            NavArtists = GetBool("NavArtists", true);
+            NavPlaylists = GetBool("NavPlaylists", true);
+            NavGenres = GetBool("NavGenres", true);
+            NavRadio = GetBool("NavRadio", true);
+            NavSearch = GetBool("NavSearch", true);
+
             Password = LoadPassword();
         }
 
@@ -61,6 +92,22 @@ namespace NavidromeXbox.Services
             Local.Values["TranscodeFormat"] = TranscodeFormat ?? "raw";
             Local.Values["ScrobbleEnabled"] = ScrobbleEnabled;
             Local.Values["GaplessEnabled"] = GaplessEnabled;
+        }
+
+        public static void SaveLayout()
+        {
+            Local.Values["HomeNewest"] = HomeNewest;
+            Local.Values["HomeRecent"] = HomeRecent;
+            Local.Values["HomeFrequent"] = HomeFrequent;
+            Local.Values["HomeRandom"] = HomeRandom;
+            Local.Values["HomeStarred"] = HomeStarred;
+
+            Local.Values["NavAlbums"] = NavAlbums;
+            Local.Values["NavArtists"] = NavArtists;
+            Local.Values["NavPlaylists"] = NavPlaylists;
+            Local.Values["NavGenres"] = NavGenres;
+            Local.Values["NavRadio"] = NavRadio;
+            Local.Values["NavSearch"] = NavSearch;
         }
 
         public static void Clear()

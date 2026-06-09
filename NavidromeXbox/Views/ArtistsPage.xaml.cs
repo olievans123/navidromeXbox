@@ -3,6 +3,7 @@ using NavidromeXbox.Models;
 using NavidromeXbox.Services;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 
 namespace NavidromeXbox.Views
@@ -22,7 +23,17 @@ namespace NavidromeXbox.Views
             try
             {
                 var groups = await AppState.Current.Api.GetArtistsAsync();
-                IndexHost.ItemsSource = groups;
+
+                // Group the index letters through a CollectionViewSource so the GridView
+                // renders sticky headers while still virtualizing the tiles underneath.
+                var cvs = new CollectionViewSource
+                {
+                    IsSourceGrouped = true,
+                    Source = groups,
+                    ItemsPath = new PropertyPath("Items"),
+                };
+                ArtistsGrid.ItemsSource = cvs.View;
+
                 EmptyText.Text = "No artists found.";
                 EmptyText.Visibility = groups.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 _loaded = true;

@@ -31,18 +31,69 @@
                             </StackPanel>
                         </StackPanel>
 
-                        <Button x:Name="HomeNav" Style="{StaticResource NavButton}" Tag="home" Click="Nav_Click" Content="&#xE80F;   Home" FontFamily="Segoe MDL2 Assets" />
-                        <Button Style="{StaticResource NavButton}" Tag="albums" Click="Nav_Click" Content="&#xE93C;   Albums" FontFamily="Segoe MDL2 Assets" />
-                        <Button Style="{StaticResource NavButton}" Tag="artists" Click="Nav_Click" Content="&#xE77B;   Artists" FontFamily="Segoe MDL2 Assets" />
-                        <Button Style="{StaticResource NavButton}" Tag="playlists" Click="Nav_Click" Content="&#xE90B;   Playlists" FontFamily="Segoe MDL2 Assets" />
-                        <Button Style="{StaticResource NavButton}" Tag="genres" Click="Nav_Click" Content="&#xE8EC;   Genres" FontFamily="Segoe MDL2 Assets" />
-                        <Button Style="{StaticResource NavButton}" Tag="search" Click="Nav_Click" Content="&#xE721;   Search" FontFamily="Segoe MDL2 Assets" />
-                        <Button Style="{StaticResource NavButton}" Tag="nowplaying" Click="Nav_Click" Content="&#xE768;   Now Playing" FontFamily="Segoe MDL2 Assets" />
+                        <Button x:Name="HomeNav" Style="{StaticResource NavButton}" Tag="home" Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="16">
+                                <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="18" Width="22" VerticalAlignment="Center" />
+                                <TextBlock Text="Home" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="AlbumsNav" Style="{StaticResource NavButton}" Tag="albums" Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="16">
+                                <TextBlock Text="&#xE93C;" FontFamily="Segoe MDL2 Assets" FontSize="18" Width="22" VerticalAlignment="Center" />
+                                <TextBlock Text="Albums" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="ArtistsNav" Style="{StaticResource NavButton}" Tag="artists" Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="16">
+                                <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" FontSize="18" Width="22" VerticalAlignment="Center" />
+                                <TextBlock Text="Artists" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="PlaylistsNav" Style="{StaticResource NavButton}" Tag="playlists" Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="16">
+                                <TextBlock Text="&#xE90B;" FontFamily="Segoe MDL2 Assets" FontSize="18" Width="22" VerticalAlignment="Center" />
+                                <TextBlock Text="Playlists" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="GenresNav" Style="{StaticResource NavButton}" Tag="genres" Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="16">
+                                <TextBlock Text="&#xE8EC;" FontFamily="Segoe MDL2 Assets" FontSize="18" Width="22" VerticalAlignment="Center" />
+                                <TextBlock Text="Genres" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="RadioNav" Style="{StaticResource NavButton}" Tag="radio" Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="16">
+                                <TextBlock Text="&#xE93E;" FontFamily="Segoe MDL2 Assets" FontSize="18" Width="22" VerticalAlignment="Center" />
+                                <TextBlock Text="Radio" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="SearchNav" Style="{StaticResource NavButton}" Tag="search" Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="16">
+                                <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="18" Width="22" VerticalAlignment="Center" />
+                                <TextBlock Text="Search" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="NowPlayingNav" Style="{StaticResource NavButton}" Tag="nowplaying" Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="16">
+                                <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="18" Width="22" VerticalAlignment="Center" />
+                                <TextBlock Text="Now Playing" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
 
                         <Border Height="1" Background="{StaticResource HairlineBrush}" Margin="8,8,8,8" />
 
-                        <Button Style="{StaticResource NavButton}" Tag="queue" Click="Nav_Click" Content="&#xE90B;   Queue" FontFamily="Segoe MDL2 Assets" />
-                        <Button Style="{StaticResource NavButton}" Tag="settings" Click="Nav_Click" Content="&#xE713;   Settings" FontFamily="Segoe MDL2 Assets" />
+                        <Button x:Name="QueueNav" Style="{StaticResource NavButton}" Tag="queue" Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="16">
+                                <TextBlock Text="&#xE90B;" FontFamily="Segoe MDL2 Assets" FontSize="18" Width="22" VerticalAlignment="Center" />
+                                <TextBlock Text="Queue" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="SettingsNav" Style="{StaticResource NavButton}" Tag="settings" Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="16">
+                                <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="18" Width="22" VerticalAlignment="Center" />
+                                <TextBlock Text="Settings" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </ScrollViewer>
             </SplitView.Pane>

@@ -351,9 +351,11 @@
 
     <!-- ============ Shared item templates ============ -->
 
-    <!-- Album cover tile (used in grids on Home / Albums / Artist / Search) -->
+    <!-- Album cover tile (used in grids on Home / Albums / Artist / Search).
+         The right margin keeps tiles apart in the horizontal Home shelves, where the
+         list item containers add no horizontal gap of their own. -->
     <DataTemplate x:Key="AlbumTileTemplate">
-        <StackPanel Width="200" Margin="0,0,0,6">
+        <StackPanel Width="200" Margin="0,0,16,12">
             <Border Width="200" Height="200" CornerRadius="12" Background="{StaticResource AppSurfaceHighBrush}">
                 <Grid>
                     <TextBlock Text="&#xE93C;" FontFamily="Segoe MDL2 Assets" FontSize="48"
@@ -372,7 +374,7 @@
 
     <!-- Artist tile (round cover) -->
     <DataTemplate x:Key="ArtistTileTemplate">
-        <StackPanel Width="190" Margin="0,0,0,6" HorizontalAlignment="Center">
+        <StackPanel Width="190" Margin="0,0,16,12" HorizontalAlignment="Center">
             <Border Width="170" Height="170" CornerRadius="85" Background="{StaticResource AppSurfaceHighBrush}" HorizontalAlignment="Center">
                 <Grid>
                     <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" FontSize="48"
@@ -390,7 +392,7 @@
 
     <!-- Playlist tile -->
     <DataTemplate x:Key="PlaylistTileTemplate">
-        <StackPanel Width="220" Margin="0,0,0,6">
+        <StackPanel Width="220" Margin="0,0,16,12">
             <Border Width="220" Height="220" CornerRadius="12" Background="{StaticResource AppSurfaceHighBrush}">
                 <Grid>
                     <TextBlock Text="&#xE90B;" FontFamily="Segoe MDL2 Assets" FontSize="48"

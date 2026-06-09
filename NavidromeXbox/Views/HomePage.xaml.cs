@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using NavidromeXbox.Models;
 using NavidromeXbox.Services;
@@ -11,6 +12,7 @@ namespace NavidromeXbox.Views
     public sealed partial class HomePage : Page
     {
         bool _loaded;
+        string _loadedSig;
 
         public HomePage()
         {
@@ -19,9 +21,13 @@ namespace NavidromeXbox.Views
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (_loaded) return;
+            // Reload when the user has changed which shelves to show; otherwise keep the cache.
+            if (_loaded && ShelfSignature() == _loadedSig) return;
             await LoadAsync();
         }
+
+        static string ShelfSignature() =>
+            $"{Settings.HomeNewest}|{Settings.HomeRecent}|{Settings.HomeFrequent}|{Settings.HomeRandom}|{Settings.HomeStarred}";
 
         async Task LoadAsync()
         {
@@ -33,26 +39,36 @@ namespace NavidromeXbox.Views
             GreetingText.Text = user != null ? $"Welcome, {user.Username}" : "Home";
             SubText.Text = user != null ? $"Connected to {user.ServerName}" : "";
 
+            // Collapse the disabled shelves up front; only fetch the ones we'll show.
+            NewestSection.Visibility = Vis(Settings.HomeNewest);
+            RecentSection.Visibility = Vis(Settings.HomeRecent);
+            FrequentSection.Visibility = Vis(Settings.HomeFrequent);
+            RandomSection.Visibility = Vis(Settings.HomeRandom);
+            StarredSection.Visibility = Vis(Settings.HomeStarred);
+
             try
             {
-                // All five shelves in flight at once — the page appears in one round-trip.
-                var newest = api.GetAlbumList2Async("newest", 24);
-                var recent = api.GetAlbumList2Async("recent", 24);
-                var frequent = api.GetAlbumList2Async("frequent", 24);
-                var random = api.GetAlbumList2Async("random", 24);
-                var starredTask = api.GetStarred2Async();
+                var newest = Settings.HomeNewest ? api.GetAlbumList2Async("newest", 24) : NoAlbums();
+                var recent = Settings.HomeRecent ? api.GetAlbumList2Async("recent", 24) : NoAlbums();
+                var frequent = Settings.HomeFrequent ? api.GetAlbumList2Async("frequent", 24) : NoAlbums();
+                var random = Settings.HomeRandom ? api.GetAlbumList2Async("random", 24) : NoAlbums();
+                var starredTask = Settings.HomeStarred ? api.GetStarred2Async() : Task.FromResult(new SearchResults());
                 await Task.WhenAll(newest, recent, frequent, random, starredTask);
 
-                NewestShelf.ItemsSource = newest.Result;
-                RecentShelf.ItemsSource = recent.Result;
-                FrequentShelf.ItemsSource = frequent.Result;
-                RandomShelf.ItemsSource = random.Result;
+                if (Settings.HomeNewest) NewestShelf.ItemsSource = newest.Result;
+                if (Settings.HomeRecent) RecentShelf.ItemsSource = recent.Result;
+                if (Settings.HomeFrequent) FrequentShelf.ItemsSource = frequent.Result;
+                if (Settings.HomeRandom) RandomShelf.ItemsSource = random.Result;
 
-                var starred = starredTask.Result;
-                if (starred.Albums.Count > 0) StarredShelf.ItemsSource = starred.Albums;
-                else StarredSection.Visibility = Visibility.Collapsed;
+                if (Settings.HomeStarred)
+                {
+                    var albums = starredTask.Result.Albums;
+                    if (albums.Count > 0) StarredShelf.ItemsSource = albums;
+                    else StarredSection.Visibility = Visibility.Collapsed;
+                }
 
                 _loaded = true;
+                _loadedSig = ShelfSignature();
             }
             catch (Exception ex)
             {
@@ -64,6 +80,9 @@ namespace NavidromeXbox.Views
                 Busy.IsActive = false;
             }
         }
+
+        static Visibility Vis(bool on) => on ? Visibility.Visible : Visibility.Collapsed;
+        static Task<List<Album>> NoAlbums() => Task.FromResult(new List<Album>());
 
         void Album_Click(object sender, ItemClickEventArgs e)
         {

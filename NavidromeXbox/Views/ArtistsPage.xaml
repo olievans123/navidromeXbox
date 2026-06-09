@@ -13,23 +13,25 @@
         <TextBlock Grid.Row="0" Text="Artists" FontSize="{StaticResource TitleSize}" FontWeight="Bold"
                    Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12" />
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <ItemsControl x:Name="IndexHost">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="0,0,0,18">
+        <!-- A single grouped GridView keeps virtualization (one scroll surface), so even a
+             library with thousands of artists realizes only the tiles on screen. -->
+        <GridView x:Name="ArtistsGrid" Grid.Row="1" IsItemClickEnabled="True" SelectionMode="None"
+                  ItemClick="Artist_Click" ItemTemplate="{StaticResource ArtistTileTemplate}"
+                  ScrollViewer.IsVerticalScrollChainingEnabled="False">
+            <GridView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
                             <Border Background="{StaticResource AppSurfaceHighBrush}" CornerRadius="8"
-                                    Padding="14,4" HorizontalAlignment="Left" Margin="0,0,0,8">
+                                    Padding="14,4" HorizontalAlignment="Left" Margin="0,10,0,8">
                                 <TextBlock Text="{Binding Key}" FontSize="{StaticResource SubtitleSize}" FontWeight="Bold"
                                            Foreground="{StaticResource AccentLightBrush}" />
                             </Border>
-                            <GridView ItemsSource="{Binding Items}" IsItemClickEnabled="True" SelectionMode="None"
-                                      ItemClick="Artist_Click" ItemTemplate="{StaticResource ArtistTileTemplate}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </GridView.GroupStyle>
+        </GridView>
 
         <ProgressRing x:Name="Busy" Grid.Row="1" Width="44" Height="44" IsActive="True"
                       Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />

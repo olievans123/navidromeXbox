@@ -23,6 +23,7 @@ server. Browse your whole library, search, and stream — with **gapless playbac
 | **Album & playlist detail** | Cover hero, full track list, **Play / Shuffle / Add‑to‑queue**, and one‑tap **star**. |
 | **Playlists** | All your playlists, with cover, metadata, and play/shuffle. |
 | **Genres** | Tap a genre to start an instant shuffled mix. |
+| **Radio** | Your Navidrome internet-radio stations, one click to start the live stream. |
 | **Search** | Debounced, unified `search3` across **artists, albums, and songs** with rich results. |
 | **Now Playing** | Full‑screen player: large art, **seekable** progress, shuffle / prev / play‑pause / next / repeat, star, and a jump to the queue. |
 | **Queue** | See what's next, **jump to any track**, and clear the queue. |
@@ -30,6 +31,7 @@ server. Browse your whole library, search, and stream — with **gapless playbac
 | **Background playback** | Declares `backgroundMediaPlayback`, so the music keeps playing while you browse the dashboard or jump into a game. |
 | **Scrobbling** | Plays are reported back to Navidrome (and any connected Last.fm / ListenBrainz), with proper "now playing" + completion thresholds. Toggle in Settings. |
 | **Transcoding** | Optional max‑bitrate cap and target format (MP3 / Opus / AAC) for slower links — the server transcodes on the fly. |
+| **Customizable** | Settings let you choose which Home shelves and which side‑menu sections appear, so the app shows only what you use. |
 
 The whole UI is tuned for a TV: large type, controller focus animations, and a
 "midnight studio" violet + cyan palette.
@@ -141,8 +143,9 @@ variant from a single source image.
 - [x] **M2 — Discover**: Genres mixes, unified search, starred.
 - [x] **M3 — Playback**: full Now Playing, seek, shuffle/repeat, queue management, scrobbling.
 - [x] **M4 — Account**: transcoding prefs, server info, secure sign-out.
+- [x] **Discover, pt. 2**: internet radio, customizable Home shelves & side menu, background playback.
 - [ ] **Long tail**: playlist editing on-device, per-song context menu (play next / add to playlist),
-      song star toggles inline, offline cache, internet radio & podcasts, resume-queue on launch,
+      song star toggles inline, offline cache, podcasts, resume-queue on launch,
       lyrics (`getLyrics`), ARM64 build.
 
 ---

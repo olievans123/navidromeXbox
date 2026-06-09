@@ -184,6 +184,13 @@
     <Compile Include="Views\GenresPage.xaml.cs">
       <DependentUpon>GenresPage.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\RadioPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Views\RadioPage.xaml.cs">
+      <DependentUpon>RadioPage.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\SearchPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

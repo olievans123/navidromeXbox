@@ -111,7 +111,8 @@ namespace NavidromeXbox.Services
 
         MediaPlaybackItem BuildItem(Song song)
         {
-            var url = AppState.Current.Api.StreamUrl(song.Id);
+            // Radio stations carry a ready-to-play URL; everything else streams via /rest/stream.
+            var url = song.IsRadio ? song.StreamOverride : AppState.Current.Api.StreamUrl(song.Id);
             var source = MediaSource.CreateFromUri(new Uri(url));
             var item = new MediaPlaybackItem(source);
 
@@ -149,6 +150,19 @@ namespace NavidromeXbox.Services
         }
 
         public void PlaySong(Song song) => PlayQueue(new List<Song> { song }, 0);
+
+        /// <summary>Play a single internet-radio station (a continuous live stream).</summary>
+        public void PlayRadio(RadioStation station)
+        {
+            if (station == null || string.IsNullOrEmpty(station.StreamUrl)) return;
+            PlaySong(new Song
+            {
+                Id = station.Id ?? station.StreamUrl,
+                Title = station.Name,
+                ArtistName = "Internet radio",
+                StreamOverride = station.StreamUrl,
+            });
+        }
 
         /// <summary>Enqueue at the end.</summary>
         public void AddToQueue(Song song)
@@ -260,7 +274,7 @@ namespace NavidromeXbox.Services
             var outgoing = _scrobbleCandidate;
             _scrobbleCandidate = null;
             double played = _lastPositionSeconds;
-            if (outgoing != null && Settings.ScrobbleEnabled)
+            if (outgoing != null && !outgoing.IsRadio && Settings.ScrobbleEnabled)
             {
                 double dur = outgoing.DurationSeconds ?? 0;
                 bool enough = played >= 240 || (dur > 0 && played >= dur * 0.5);
@@ -294,7 +308,7 @@ namespace NavidromeXbox.Services
 
             _scrobbleCandidate = song;
             _lastPositionSeconds = 0;
-            if (song != null && Settings.ScrobbleEnabled)
+            if (song != null && !song.IsRadio && Settings.ScrobbleEnabled)
                 _ = AppState.Current.Api.ScrobbleAsync(song.Id, false);   // "now playing"
 
             RaiseOnUi(() =>
