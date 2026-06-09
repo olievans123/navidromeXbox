@@ -63,5 +63,6 @@ The workflow (`.github/workflows/build-uwp.yml`):
 
 ## Optional: ARM64
 
-The workflow builds `x64`. Newer Xbox models are ARM — if x64 won't deploy, add `ARM64` to
-`AppxBundlePlatforms` / the build matrix (the project already has ARM64 configurations).
+The workflow builds `x64`, which is what every retail Xbox (One and Series) runs. The project
+also carries ARM64 configurations in case you ever want to deploy to a Windows-on-ARM PC —
+add `ARM64` to `AppxBundlePlatforms` / the build matrix to produce that flavour.

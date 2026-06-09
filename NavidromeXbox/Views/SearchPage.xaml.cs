@@ -39,6 +39,7 @@ namespace NavidromeXbox.Views
             try
             {
                 var res = await AppState.Current.Api.Search3Async(query);
+                if (query != _pending) return;   // a newer query superseded this one mid-flight
 
                 ArtistResults.ItemsSource = res.Artists;
                 ArtistsSection.Visibility = res.Artists.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -60,14 +61,16 @@ namespace NavidromeXbox.Views
             }
             catch (Exception ex)
             {
+                if (query != _pending) return;
                 EmptyText.Text = "Search failed: " + ex.Message;
                 EmptyText.Visibility = Visibility.Visible;
             }
-            finally { Busy.IsActive = false; }
+            finally { if (query == _pending) Busy.IsActive = false; }
         }
 
         void ClearResults()
         {
+            Busy.IsActive = false;   // a superseded in-flight search won't clear it
             ArtistsSection.Visibility = Visibility.Collapsed;
             AlbumsSection.Visibility = Visibility.Collapsed;
             SongsSection.Visibility = Visibility.Collapsed;

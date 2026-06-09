@@ -83,9 +83,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Grid>
+                    <Grid RenderTransformOrigin="0.5,0.5">
                         <Grid.RenderTransform>
-                            <ScaleTransform x:Name="Scale" CenterX="0.5" CenterY="0.5" ScaleX="1" ScaleY="1" />
+                            <ScaleTransform x:Name="Scale" ScaleX="1" ScaleY="1" />
                         </Grid.RenderTransform>
                         <Border x:Name="Root"
                                 Background="{TemplateBinding Background}"
@@ -296,9 +296,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="GridViewItem">
-                    <Grid Background="Transparent">
+                    <Grid Background="Transparent" RenderTransformOrigin="0.5,0.5">
                         <Grid.RenderTransform>
-                            <ScaleTransform x:Name="Scale" CenterX="0.5" CenterY="0.5" ScaleX="1" ScaleY="1" />
+                            <ScaleTransform x:Name="Scale" ScaleX="1" ScaleY="1" />
                         </Grid.RenderTransform>
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"

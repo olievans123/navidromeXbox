@@ -5,6 +5,7 @@ using NavidromeXbox.Services;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -53,6 +54,10 @@ namespace NavidromeXbox.Views
                 case nameof(PlaybackService.RepeatGlyph):
                     RepeatBtn.Content = Player.RepeatGlyph;
                     break;
+                case nameof(PlaybackService.Shuffle):
+                case nameof(PlaybackService.RepeatActive):
+                    UpdateToggleTints();
+                    break;
             }
         }
 
@@ -77,7 +82,17 @@ namespace NavidromeXbox.Views
             }
             PlayBtn.Content = Player.PlayPauseGlyph;
             RepeatBtn.Content = Player.RepeatGlyph;
+            UpdateToggleTints();
             UpdateProgress();
+        }
+
+        // Accent the shuffle / repeat icons while their mode is engaged.
+        void UpdateToggleTints()
+        {
+            var accent = (Brush)Application.Current.Resources["AccentBrush"];
+            var idle = (Brush)Application.Current.Resources["TextPrimaryBrush"];
+            ShuffleBtn.Foreground = Player.Shuffle ? accent : idle;
+            RepeatBtn.Foreground = Player.RepeatActive ? accent : idle;
         }
 
         void UpdateProgress()

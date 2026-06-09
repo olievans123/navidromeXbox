@@ -27,6 +27,7 @@ server. Browse your whole library, search, and stream — with **gapless playbac
 | **Now Playing** | Full‑screen player: large art, **seekable** progress, shuffle / prev / play‑pause / next / repeat, star, and a jump to the queue. |
 | **Queue** | See what's next, **jump to any track**, and clear the queue. |
 | **Gapless playback** | A single `MediaPlaybackList` engine streams the queue gaplessly and wires the **System Media Transport Controls**, so the Xbox guide, the remote, and voice can play / pause / skip — with cover art and track info on the system overlay. |
+| **Background playback** | Declares `backgroundMediaPlayback`, so the music keeps playing while you browse the dashboard or jump into a game. |
 | **Scrobbling** | Plays are reported back to Navidrome (and any connected Last.fm / ListenBrainz), with proper "now playing" + completion thresholds. Toggle in Settings. |
 | **Transcoding** | Optional max‑bitrate cap and target format (MP3 / Opus / AAC) for slower links — the server transcodes on the fly. |
 

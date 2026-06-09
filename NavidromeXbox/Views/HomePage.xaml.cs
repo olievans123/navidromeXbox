@@ -35,12 +35,20 @@ namespace NavidromeXbox.Views
 
             try
             {
-                NewestShelf.ItemsSource = await api.GetAlbumList2Async("newest", 24);
-                RecentShelf.ItemsSource = await api.GetAlbumList2Async("recent", 24);
-                FrequentShelf.ItemsSource = await api.GetAlbumList2Async("frequent", 24);
-                RandomShelf.ItemsSource = await api.GetAlbumList2Async("random", 24);
+                // All five shelves in flight at once — the page appears in one round-trip.
+                var newest = api.GetAlbumList2Async("newest", 24);
+                var recent = api.GetAlbumList2Async("recent", 24);
+                var frequent = api.GetAlbumList2Async("frequent", 24);
+                var random = api.GetAlbumList2Async("random", 24);
+                var starredTask = api.GetStarred2Async();
+                await Task.WhenAll(newest, recent, frequent, random, starredTask);
 
-                var starred = await api.GetStarred2Async();
+                NewestShelf.ItemsSource = newest.Result;
+                RecentShelf.ItemsSource = recent.Result;
+                FrequentShelf.ItemsSource = frequent.Result;
+                RandomShelf.ItemsSource = random.Result;
+
+                var starred = starredTask.Result;
                 if (starred.Albums.Count > 0) StarredShelf.ItemsSource = starred.Albums;
                 else StarredSection.Visibility = Visibility.Collapsed;
 

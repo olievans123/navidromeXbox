@@ -13,6 +13,8 @@ namespace NavidromeXbox.Helpers
         public static void FocusOnLoad(this Control control)
         {
             if (control == null) return;
+            // Detail pages call this after an await, by which point Loaded has already fired.
+            if (control.IsLoaded) { control.Focus(FocusState.Programmatic); return; }
             control.Loaded += (s, e) => control.Focus(FocusState.Programmatic);
         }
 

@@ -2,7 +2,9 @@ using System;
 using System.ComponentModel;
 using NavidromeXbox.Helpers;
 using NavidromeXbox.Services;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace NavidromeXbox.Controls
 {
@@ -21,7 +23,7 @@ namespace NavidromeXbox.Controls
             this.InitializeComponent();
             this.DataContext = Player;
             Player.PropertyChanged += OnPlayerChanged;
-            this.Loaded += (s, e) => UpdateTime();
+            this.Loaded += (s, e) => { UpdateTime(); UpdateToggleTints(); };
         }
 
         void OnPlayerChanged(object sender, PropertyChangedEventArgs e)
@@ -32,11 +34,25 @@ namespace NavidromeXbox.Controls
             {
                 UpdateTime();
             }
+            else if (e.PropertyName == nameof(PlaybackService.Shuffle) ||
+                     e.PropertyName == nameof(PlaybackService.RepeatActive))
+            {
+                UpdateToggleTints();
+            }
         }
 
         void UpdateTime()
         {
             TimeText.Text = $"{Format.Duration(Player.Position)} / {Format.Duration(Player.Duration)}";
+        }
+
+        // Accent the shuffle / repeat icons while their mode is engaged.
+        void UpdateToggleTints()
+        {
+            var accent = (Brush)Application.Current.Resources["AccentBrush"];
+            var idle = (Brush)Application.Current.Resources["TextPrimaryBrush"];
+            ShuffleBtn.Foreground = Player.Shuffle ? accent : idle;
+            RepeatBtn.Foreground = Player.RepeatActive ? accent : idle;
         }
 
         void Info_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e) => ExpandRequested?.Invoke();

@@ -28,3 +28,6 @@ packages/
 
 # macOS
 .DS_Store
+
+# Local AI-tooling config (machine-specific permissions)
+.claude/

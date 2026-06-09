@@ -3,6 +3,7 @@ using NavidromeXbox.Services;
 using NavidromeXbox.Views;
 using Windows.System;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -21,6 +22,8 @@ namespace NavidromeXbox
             Instance = this;
             this.KeyDown += Page_KeyDown;
             this.Loaded += OnLoaded;
+            // B on the controller (and the system back gesture on PC) walks the page history.
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
         }
 
         void OnLoaded(object sender, RoutedEventArgs e)
@@ -31,6 +34,7 @@ namespace NavidromeXbox
                 // First run / signed out: take over the whole frame with the login flow.
                 ContentFrame.Navigate(typeof(LoginPage));
                 HighlightNav(null);
+                MenuButton.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -38,10 +42,26 @@ namespace NavidromeXbox
             }
         }
 
+        void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (NavSplit.IsPaneOpen)
+            {
+                ClosePane();
+                e.Handled = true;
+            }
+            else if (ContentFrame.CanGoBack)
+            {
+                ContentFrame.GoBack();
+                e.Handled = true;
+            }
+            // Otherwise leave it unhandled so B at the root minimizes to the dashboard.
+        }
+
         // Gamepad Menu/View toggles the nav from anywhere; B / Esc closes it.
         void Page_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            if (e.Key == VirtualKey.GamepadMenu || e.Key == VirtualKey.GamepadView)
+            bool signedIn = MenuButton.Visibility == Visibility.Visible;
+            if ((e.Key == VirtualKey.GamepadMenu || e.Key == VirtualKey.GamepadView) && signedIn)
             {
                 SetPane(!NavSplit.IsPaneOpen);
                 e.Handled = true;
@@ -49,6 +69,12 @@ namespace NavidromeXbox
             else if (NavSplit.IsPaneOpen && (e.Key == VirtualKey.GamepadB || e.Key == VirtualKey.Escape))
             {
                 ClosePane();
+                e.Handled = true;
+            }
+            else if (e.Key == VirtualKey.Escape && ContentFrame.CanGoBack)
+            {
+                // Keyboard parity with B; GamepadB itself arrives via BackRequested.
+                ContentFrame.GoBack();
                 e.Handled = true;
             }
         }
@@ -96,15 +122,26 @@ namespace NavidromeXbox
         public void OpenNowPlaying() { NavSplit.IsPaneOpen = false; GoTo("nowplaying"); }
 
         /// <summary>Called by LoginPage once a server connection is established.</summary>
-        public void OnSignedIn() => GoTo("home");
+        public void OnSignedIn()
+        {
+            MenuButton.Visibility = Visibility.Visible;
+            GoTo("home");
+            ContentFrame.BackStack.Clear();   // B from Home shouldn't land back on the login form
+        }
 
         /// <summary>Return the whole frame to the login flow after signing out.</summary>
         public void ReturnToLogin()
         {
             NavSplit.IsPaneOpen = false;
             ContentFrame.Navigate(typeof(LoginPage));
+            ContentFrame.BackStack.Clear();   // signed-out pages behind us are stale
+            // Flush cached browse pages too — a different account may sign in next.
+            int cacheSize = ContentFrame.CacheSize;
+            ContentFrame.CacheSize = 0;
+            ContentFrame.CacheSize = cacheSize;
             HighlightNav(null);
             _currentTag = null;
+            MenuButton.Visibility = Visibility.Collapsed;
         }
 
         void GoTo(string tag)

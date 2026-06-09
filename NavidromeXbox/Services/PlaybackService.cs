@@ -51,7 +51,7 @@ namespace NavidromeXbox.Services
 
             _list.CurrentItemChanged += OnCurrentItemChanged;
             _player.PlaybackSession.PlaybackStateChanged += OnPlaybackStateChanged;
-            _player.MediaEnded += (s, e) => RaiseOnUi(() => Raise(nameof(IsPlaying)));
+            _player.MediaEnded += OnMediaEnded;
 
             _tick.Tick += (s, e) => UpdatePosition();
             _tick.Start();
@@ -231,10 +231,13 @@ namespace NavidromeXbox.Services
         {
             switch (_repeat)
             {
-                case RepeatMode.Off: Repeat = RepeatMode.All; _list.AutoRepeatEnabled = true; break;
-                case RepeatMode.All: Repeat = RepeatMode.One; _player.IsLoopingEnabled = true; break;
-                default: Repeat = RepeatMode.Off; _list.AutoRepeatEnabled = false; _player.IsLoopingEnabled = false; break;
+                case RepeatMode.Off: Repeat = RepeatMode.All; break;
+                case RepeatMode.All: Repeat = RepeatMode.One; break;
+                default: Repeat = RepeatMode.Off; break;
             }
+            // MediaPlayer.IsLoopingEnabled is ignored when the source is a MediaPlaybackList,
+            // so One keeps the list looping and bounces back in OnCurrentItemChanged instead.
+            _list.AutoRepeatEnabled = _repeat != RepeatMode.Off;
         }
 
         // ----------------------------------------------------------- events
@@ -244,16 +247,42 @@ namespace NavidromeXbox.Services
             RaiseOnUi(() => { Raise(nameof(IsPlaying)); Raise(nameof(PlayPauseGlyph)); });
         }
 
-        void OnCurrentItemChanged(MediaPlaybackList sender, CurrentMediaPlaybackItemChangedEventArgs args)
+        /// <summary>Fires when the whole list finishes (no auto-repeat) — settle the last track's scrobble.</summary>
+        void OnMediaEnded(MediaPlayer sender, object args)
         {
-            // Scrobble the outgoing track if it played long enough.
+            ScrobbleOutgoing();
+            RaiseOnUi(() => { Raise(nameof(IsPlaying)); Raise(nameof(PlayPauseGlyph)); });
+        }
+
+        /// <summary>Submit the track we're leaving if it played long enough (Last.fm rules: 4 min or half).</summary>
+        void ScrobbleOutgoing()
+        {
             var outgoing = _scrobbleCandidate;
+            _scrobbleCandidate = null;
             double played = _lastPositionSeconds;
             if (outgoing != null && Settings.ScrobbleEnabled)
             {
                 double dur = outgoing.DurationSeconds ?? 0;
                 bool enough = played >= 240 || (dur > 0 && played >= dur * 0.5);
                 if (enough) _ = AppState.Current.Api.ScrobbleAsync(outgoing.Id, true);
+            }
+        }
+
+        void OnCurrentItemChanged(MediaPlaybackList sender, CurrentMediaPlaybackItemChangedEventArgs args)
+        {
+            ScrobbleOutgoing();
+
+            // Repeat-one: when a track ends naturally, jump back to it instead of advancing.
+            // (Manual skips arrive with Reason = AppRequested and pass through.)
+            if (_repeat == RepeatMode.One &&
+                args.Reason == MediaPlaybackItemChangedReason.EndOfStream &&
+                args.OldItem != null && args.OldItem != args.NewItem)
+            {
+                int back = _list.Items.IndexOf(args.OldItem);
+                if (back >= 0)
+                {
+                    try { _list.MoveTo((uint)back); return; } catch { }
+                }
             }
 
             Song song = null;
