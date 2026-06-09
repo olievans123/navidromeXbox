@@ -13,25 +13,10 @@
         <TextBlock Grid.Row="0" Text="Artists" FontSize="{StaticResource TitleSize}" FontWeight="Bold"
                    Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12" />
 
-        <!-- A single grouped GridView keeps virtualization (one scroll surface), so even a
-             library with thousands of artists realizes only the tiles on screen. -->
+        <!-- One flat, virtualized GridView: only the tiles on screen are realized, so even a
+             library with thousands of artists scrolls smoothly without exhausting memory. -->
         <GridView x:Name="ArtistsGrid" Grid.Row="1" IsItemClickEnabled="True" SelectionMode="None"
-                  ItemClick="Artist_Click" ItemTemplate="{StaticResource ArtistTileTemplate}"
-                  ScrollViewer.IsVerticalScrollChainingEnabled="False">
-            <GridView.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <Border Background="{StaticResource AppSurfaceHighBrush}" CornerRadius="8"
-                                    Padding="14,4" HorizontalAlignment="Left" Margin="0,10,0,8">
-                                <TextBlock Text="{Binding Key}" FontSize="{StaticResource SubtitleSize}" FontWeight="Bold"
-                                           Foreground="{StaticResource AccentLightBrush}" />
-                            </Border>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
-            </GridView.GroupStyle>
-        </GridView>
+                  ItemClick="Artist_Click" ItemTemplate="{StaticResource ArtistTileTemplate}" Padding="0,0,0,8" />
 
         <ProgressRing x:Name="Busy" Grid.Row="1" Width="44" Height="44" IsActive="True"
                       Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />

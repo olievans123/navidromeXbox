@@ -68,6 +68,7 @@ namespace NavidromeXbox.Views
             EmptyState.Visibility = has ? Visibility.Collapsed : Visibility.Visible;
 
             var s = Player.CurrentSong;
+            bool radio = s != null && s.IsRadio;
             if (s != null)
             {
                 TitleText.Text = s.Title;
@@ -80,6 +81,13 @@ namespace NavidromeXbox.Views
                 }
                 StarBtn.Content = s.Starred ? "\uEB52" : "\uEB51";
             }
+
+            // Radio is a live stream: swap the seek bar for a LIVE badge and hide star/queue,
+            // which don't apply to a station.
+            SeekRow.Visibility = radio ? Visibility.Collapsed : Visibility.Visible;
+            LiveText.Visibility = radio ? Visibility.Visible : Visibility.Collapsed;
+            StarBtn.Visibility = radio ? Visibility.Collapsed : Visibility.Visible;
+
             PlayBtn.Content = Player.PlayPauseGlyph;
             RepeatBtn.Content = Player.RepeatGlyph;
             UpdateToggleTints();
@@ -97,6 +105,7 @@ namespace NavidromeXbox.Views
 
         void UpdateProgress()
         {
+            if (Player.CurrentSong?.IsRadio == true) return;   // live stream: the LIVE badge stands in
             _suppressSeek = true;
             SeekSlider.Maximum = Player.DurationSeconds;
             SeekSlider.Value = Player.PositionSeconds;

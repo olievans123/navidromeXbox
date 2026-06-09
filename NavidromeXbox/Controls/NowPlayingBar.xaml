@@ -23,35 +23,38 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <!-- Tappable now-playing summary → opens the full screen -->
+            <!-- Tappable now-playing summary → opens the full screen.
+                 FontFamily is forced back to the UI font: the IconButton style sets Segoe MDL2
+                 Assets (for glyph buttons), which would otherwise garble the title/artist text. -->
             <Button Grid.Row="0" Grid.Column="0" x:Name="InfoButton" Click="Info_Click"
                     Style="{StaticResource IconButton}" HorizontalContentAlignment="Left"
-                    Background="Transparent" Padding="6" CornerRadius="10">
+                    FontFamily="Segoe UI" Background="Transparent" Padding="6" CornerRadius="10">
                 <StackPanel Orientation="Horizontal" Spacing="14">
                     <Border Width="52" Height="52" CornerRadius="8" Background="{StaticResource AppSurfaceHighBrush}">
                         <Image Source="{Binding CurrentSong.CoverArtUri}" Stretch="UniformToFill" />
                     </Border>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="{Binding CurrentSong.Title}" FontSize="{StaticResource BodySize}" FontWeight="SemiBold"
+                        <TextBlock Text="{Binding CurrentSong.Title}" FontFamily="Segoe UI" FontSize="{StaticResource BodySize}" FontWeight="SemiBold"
                                    Foreground="{StaticResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" MaxWidth="520" />
-                        <TextBlock Text="{Binding CurrentSong.ArtistAndAlbum}" FontSize="{StaticResource CaptionSize}"
+                        <TextBlock Text="{Binding CurrentSong.ArtistAndAlbum}" FontFamily="Segoe UI" FontSize="{StaticResource CaptionSize}"
                                    Foreground="{StaticResource TextSecondaryBrush}" TextTrimming="CharacterEllipsis" MaxWidth="520" />
                     </StackPanel>
                 </StackPanel>
             </Button>
 
-            <!-- Transport -->
+            <!-- Transport. Each button is vertically centred so the smaller shuffle/repeat
+                 don't ride high against the larger play button. -->
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                 <Button x:Name="ShuffleBtn" Style="{StaticResource IconButton}" Width="44" Height="44" CornerRadius="22"
-                        FontSize="16" Content="&#xE8B1;" Click="Shuffle_Click" ToolTipService.ToolTip="Shuffle" />
+                        VerticalAlignment="Center" FontSize="16" Content="&#xE8B1;" Click="Shuffle_Click" ToolTipService.ToolTip="Shuffle" />
                 <Button x:Name="PrevBtn" Style="{StaticResource IconButton}" Width="46" Height="46" CornerRadius="23"
-                        FontSize="18" Content="&#xE892;" Click="Prev_Click" ToolTipService.ToolTip="Previous" />
-                <Button x:Name="PlayBtn" Style="{StaticResource TransportButton}"
+                        VerticalAlignment="Center" FontSize="18" Content="&#xE892;" Click="Prev_Click" ToolTipService.ToolTip="Previous" />
+                <Button x:Name="PlayBtn" Style="{StaticResource TransportButton}" VerticalAlignment="Center"
                         Content="{Binding PlayPauseGlyph}" Click="PlayPause_Click" ToolTipService.ToolTip="Play / Pause" />
                 <Button x:Name="NextBtn" Style="{StaticResource IconButton}" Width="46" Height="46" CornerRadius="23"
-                        FontSize="18" Content="&#xE893;" Click="Next_Click" ToolTipService.ToolTip="Next" />
+                        VerticalAlignment="Center" FontSize="18" Content="&#xE893;" Click="Next_Click" ToolTipService.ToolTip="Next" />
                 <Button x:Name="RepeatBtn" Style="{StaticResource IconButton}" Width="44" Height="44" CornerRadius="22"
-                        FontSize="16" Content="{Binding RepeatGlyph}" Click="Repeat_Click" ToolTipService.ToolTip="Repeat" />
+                        VerticalAlignment="Center" FontSize="16" Content="{Binding RepeatGlyph}" Click="Repeat_Click" ToolTipService.ToolTip="Repeat" />
             </StackPanel>
 
             <!-- Time + full screen -->

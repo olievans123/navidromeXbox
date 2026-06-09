@@ -1,9 +1,9 @@
 using System;
+using System.Collections.Generic;
 using NavidromeXbox.Models;
 using NavidromeXbox.Services;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 
 namespace NavidromeXbox.Views
@@ -22,20 +22,15 @@ namespace NavidromeXbox.Views
             if (_loaded) return;
             try
             {
+                // The server hands back A–Z index groups; flatten them (already alphabetical)
+                // into one list so the GridView can virtualize the whole library.
                 var groups = await AppState.Current.Api.GetArtistsAsync();
-
-                // Group the index letters through a CollectionViewSource so the GridView
-                // renders sticky headers while still virtualizing the tiles underneath.
-                var cvs = new CollectionViewSource
-                {
-                    IsSourceGrouped = true,
-                    Source = groups,
-                    ItemsPath = new PropertyPath("Items"),
-                };
-                ArtistsGrid.ItemsSource = cvs.View;
+                var all = new List<Artist>();
+                foreach (var g in groups) all.AddRange(g.Items);
+                ArtistsGrid.ItemsSource = all;
 
                 EmptyText.Text = "No artists found.";
-                EmptyText.Visibility = groups.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                EmptyText.Visibility = all.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 _loaded = true;
             }
             catch (Exception ex)

@@ -26,14 +26,15 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Width="52" Height="52" CornerRadius="10" Background="{StaticResource AppSurfaceHighBrush}">
-                            <TextBlock Text="&#xE93E;" FontFamily="Segoe MDL2 Assets" FontSize="24"
+                        <Border Grid.Column="0" Width="52" Height="52" CornerRadius="10" VerticalAlignment="Center"
+                                Background="{StaticResource AppSurfaceHighBrush}">
+                            <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="24"
                                        Foreground="{StaticResource AccentLightBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                             <TextBlock Text="{Binding Name}" FontSize="{StaticResource BodySize}" FontWeight="SemiBold"
                                        Foreground="{StaticResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" MaxLines="1" />
-                            <TextBlock Text="{Binding HomepageUrl}" FontSize="{StaticResource CaptionSize}"
+                            <TextBlock Text="{Binding Subtitle}" FontSize="{StaticResource CaptionSize}"
                                        Foreground="{StaticResource TextSecondaryBrush}" TextTrimming="CharacterEllipsis" MaxLines="1" />
                         </StackPanel>
                     </Grid>

@@ -63,7 +63,7 @@
                         </Button>
                         <Button x:Name="RadioNav" Style="{StaticResource NavButton}" Tag="radio" Click="Nav_Click">
                             <StackPanel Orientation="Horizontal" Spacing="16">
-                                <TextBlock Text="&#xE93E;" FontFamily="Segoe MDL2 Assets" FontSize="18" Width="22" VerticalAlignment="Center" />
+                                <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="18" Width="22" VerticalAlignment="Center" />
                                 <TextBlock Text="Radio" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>

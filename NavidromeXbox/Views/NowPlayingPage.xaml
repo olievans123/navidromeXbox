@@ -37,7 +37,7 @@
 
             <!-- Controls -->
             <StackPanel Grid.Row="1" Spacing="6" Margin="40,12,40,8" MaxWidth="1000" HorizontalAlignment="Stretch">
-                <Grid ColumnSpacing="14">
+                <Grid x:Name="SeekRow" ColumnSpacing="14">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -52,18 +52,22 @@
                                FontSize="{StaticResource CaptionSize}" Foreground="{StaticResource TextSecondaryBrush}" />
                 </Grid>
 
+                <!-- Live radio has no seekable timeline; show a LIVE badge instead. -->
+                <TextBlock x:Name="LiveText" Text="&#x25CF;  LIVE" Visibility="Collapsed" HorizontalAlignment="Center"
+                           FontSize="{StaticResource CaptionSize}" FontWeight="SemiBold" Foreground="{StaticResource LiveBrush}" Margin="0,4,0,4" />
+
                 <StackPanel Orientation="Horizontal" Spacing="16" HorizontalAlignment="Center" Margin="0,4,0,0">
                     <Button x:Name="ShuffleBtn" Style="{StaticResource IconButton}" Width="52" Height="52" CornerRadius="26"
-                            FontSize="18" Content="&#xE8B1;" Click="Shuffle_Click" ToolTipService.ToolTip="Shuffle" />
-                    <Button x:Name="PrevBtn" Style="{StaticResource TransportButton}" FontSize="22"
+                            VerticalAlignment="Center" FontSize="18" Content="&#xE8B1;" Click="Shuffle_Click" ToolTipService.ToolTip="Shuffle" />
+                    <Button x:Name="PrevBtn" Style="{StaticResource TransportButton}" VerticalAlignment="Center" FontSize="22"
                             Content="&#xE892;" Click="Prev_Click" ToolTipService.ToolTip="Previous" />
                     <Button x:Name="PlayBtn" Style="{StaticResource TransportButton}" Width="72" Height="72" CornerRadius="36"
-                            FontSize="26" Background="{StaticResource AccentBrush}" Foreground="#06201E"
+                            VerticalAlignment="Center" FontSize="26" Background="{StaticResource AccentBrush}" Foreground="#06201E"
                             Click="PlayPause_Click" ToolTipService.ToolTip="Play / Pause" />
-                    <Button x:Name="NextBtn" Style="{StaticResource TransportButton}" FontSize="22"
+                    <Button x:Name="NextBtn" Style="{StaticResource TransportButton}" VerticalAlignment="Center" FontSize="22"
                             Content="&#xE893;" Click="Next_Click" ToolTipService.ToolTip="Next" />
                     <Button x:Name="RepeatBtn" Style="{StaticResource IconButton}" Width="52" Height="52" CornerRadius="26"
-                            FontSize="18" Click="Repeat_Click" ToolTipService.ToolTip="Repeat" />
+                            VerticalAlignment="Center" FontSize="18" Click="Repeat_Click" ToolTipService.ToolTip="Repeat" />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Spacing="16" HorizontalAlignment="Center" Margin="0,6,0,0">

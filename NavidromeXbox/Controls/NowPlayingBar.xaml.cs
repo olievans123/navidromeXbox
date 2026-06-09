@@ -30,7 +30,8 @@ namespace NavidromeXbox.Controls
         {
             if (e.PropertyName == nameof(PlaybackService.PositionSeconds) ||
                 e.PropertyName == nameof(PlaybackService.Position) ||
-                e.PropertyName == nameof(PlaybackService.Duration))
+                e.PropertyName == nameof(PlaybackService.Duration) ||
+                e.PropertyName == nameof(PlaybackService.CurrentSong))
             {
                 UpdateTime();
             }
@@ -43,6 +44,14 @@ namespace NavidromeXbox.Controls
 
         void UpdateTime()
         {
+            if (Player.CurrentSong?.IsRadio == true)
+            {
+                // A live stream has no fixed length — show LIVE and hide the progress track.
+                TimeText.Text = "Live";
+                Progress.Visibility = Visibility.Collapsed;
+                return;
+            }
+            Progress.Visibility = Visibility.Visible;
             TimeText.Text = $"{Format.Duration(Player.Position)} / {Format.Duration(Player.Duration)}";
         }
 

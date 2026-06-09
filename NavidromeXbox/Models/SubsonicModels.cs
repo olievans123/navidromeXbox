@@ -136,6 +136,7 @@ namespace NavidromeXbox.Models
         public string Name { get; set; }
         public string StreamUrl { get; set; }
         public string HomepageUrl { get; set; }
+        public string Subtitle => string.IsNullOrWhiteSpace(HomepageUrl) ? "Internet radio" : HomepageUrl;
     }
 
     public class Genre
