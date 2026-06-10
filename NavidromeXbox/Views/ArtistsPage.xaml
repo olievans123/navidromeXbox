@@ -16,6 +16,7 @@
         <!-- One flat, virtualized GridView: only the tiles on screen are realized, so even a
              library with thousands of artists scrolls smoothly without exhausting memory. -->
         <GridView x:Name="ArtistsGrid" Grid.Row="1" IsItemClickEnabled="True" SelectionMode="None"
+                  ItemContainerStyle="{StaticResource AlbumTileGridItem}"
                   ItemClick="Artist_Click" ItemTemplate="{StaticResource ArtistTileTemplate}" Padding="0,0,0,8" />
 
         <ProgressRing x:Name="Busy" Grid.Row="1" Width="44" Height="44" IsActive="True"

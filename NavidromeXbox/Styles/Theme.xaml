@@ -227,7 +227,7 @@
     </Style>
 
     <!-- List item containers get the SAME rounded cyan focus ring as the tiles. -->
-    <Style TargetType="ListViewItem">
+    <Style x:Key="BaseListItem" TargetType="ListViewItem">
         <Setter Property="UseSystemFocusVisuals" Value="False" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
@@ -285,7 +285,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="GridViewItem">
+    <Style x:Key="BaseGridItem" TargetType="GridViewItem">
         <Setter Property="UseSystemFocusVisuals" Value="False" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
@@ -349,13 +349,27 @@
         </Setter>
     </Style>
 
+    <!-- Default item containers just adopt the base templates above. -->
+    <Style TargetType="ListViewItem" BasedOn="{StaticResource BaseListItem}" />
+    <Style TargetType="GridViewItem" BasedOn="{StaticResource BaseGridItem}" />
+
+    <!-- Cover-tile containers (album + artist tiles). The inter-tile gap lives on the container
+         Margin (OUTSIDE the focus ring) so the ring hugs the tile content — art + name +
+         subtitle — instead of overhanging into the spacing on the right/bottom. -->
+    <Style x:Key="AlbumTileListItem" TargetType="ListViewItem" BasedOn="{StaticResource BaseListItem}">
+        <Setter Property="Margin" Value="0,0,16,12" />
+    </Style>
+    <Style x:Key="AlbumTileGridItem" TargetType="GridViewItem" BasedOn="{StaticResource BaseGridItem}">
+        <Setter Property="Margin" Value="0,0,16,12" />
+    </Style>
+
     <!-- ============ Shared item templates ============ -->
 
-    <!-- Album cover tile (used in grids on Home / Albums / Artist / Search).
-         The right margin keeps tiles apart in the horizontal Home shelves, where the
-         list item containers add no horizontal gap of their own. -->
+    <!-- Album cover tile (used in grids on Home / Albums / Artist / Search). The inter-tile
+         gap is supplied by the container Margin (AlbumTileListItem / AlbumTileGridItem), so the
+         tile itself carries no margin and the focus ring sits flush to its content. -->
     <DataTemplate x:Key="AlbumTileTemplate">
-        <StackPanel Width="200" Margin="0,0,16,12">
+        <StackPanel Width="200">
             <Border Width="200" Height="200" CornerRadius="12" Background="{StaticResource AppSurfaceHighBrush}">
                 <Grid>
                     <TextBlock Text="&#xE93C;" FontFamily="Segoe MDL2 Assets" FontSize="48"
@@ -374,7 +388,7 @@
 
     <!-- Artist tile (round cover) -->
     <DataTemplate x:Key="ArtistTileTemplate">
-        <StackPanel Width="190" Margin="0,0,16,12" HorizontalAlignment="Center">
+        <StackPanel Width="190" HorizontalAlignment="Center">
             <Border Width="170" Height="170" CornerRadius="85" Background="{StaticResource AppSurfaceHighBrush}" HorizontalAlignment="Center">
                 <Grid>
                     <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" FontSize="48"
@@ -392,7 +406,7 @@
 
     <!-- Playlist tile -->
     <DataTemplate x:Key="PlaylistTileTemplate">
-        <StackPanel Width="220" Margin="0,0,16,12">
+        <StackPanel Width="220">
             <Border Width="220" Height="220" CornerRadius="12" Background="{StaticResource AppSurfaceHighBrush}">
                 <Grid>
                     <TextBlock Text="&#xE90B;" FontFamily="Segoe MDL2 Assets" FontSize="48"
@@ -436,7 +450,7 @@
 
     <!-- Genre tile -->
     <DataTemplate x:Key="GenreTileTemplate">
-        <Border Width="240" Height="120" CornerRadius="14" Margin="0,0,0,6" Padding="18"
+        <Border Width="240" Height="120" CornerRadius="14" Padding="18"
                 Background="{StaticResource AppSurfaceHighBrush}">
             <StackPanel VerticalAlignment="Center">
                 <TextBlock Text="{Binding Name}" FontSize="{StaticResource SubtitleSize}" FontWeight="SemiBold"

@@ -14,6 +14,7 @@
                    Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12" />
 
         <GridView x:Name="Grid" Grid.Row="1" IsItemClickEnabled="True" SelectionMode="None" ItemClick="Playlist_Click"
+                  ItemContainerStyle="{StaticResource AlbumTileGridItem}"
                   ItemTemplate="{StaticResource PlaylistTileTemplate}" Padding="0,0,0,8" />
 
         <ProgressRing x:Name="Busy" Grid.Row="1" Width="44" Height="44" IsActive="True"

@@ -23,6 +23,7 @@
                     <TextBlock Text="Artists" FontSize="{StaticResource SubtitleSize}" FontWeight="Bold"
                                Foreground="{StaticResource TextPrimaryBrush}" Margin="2,8,0,10" />
                     <GridView x:Name="ArtistResults" IsItemClickEnabled="True" SelectionMode="None"
+                              ItemContainerStyle="{StaticResource AlbumTileGridItem}"
                               ItemClick="Artist_Click" ItemTemplate="{StaticResource ArtistTileTemplate}" />
                 </StackPanel>
 
@@ -30,6 +31,7 @@
                     <TextBlock Text="Albums" FontSize="{StaticResource SubtitleSize}" FontWeight="Bold"
                                Foreground="{StaticResource TextPrimaryBrush}" Margin="2,8,0,10" />
                     <GridView x:Name="AlbumResults" IsItemClickEnabled="True" SelectionMode="None"
+                              ItemContainerStyle="{StaticResource AlbumTileGridItem}"
                               ItemClick="Album_Click" ItemTemplate="{StaticResource AlbumTileTemplate}" />
                 </StackPanel>
 

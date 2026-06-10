@@ -49,6 +49,7 @@
                 <TextBlock Text="Albums" FontSize="{StaticResource SubtitleSize}" FontWeight="Bold"
                            Foreground="{StaticResource TextPrimaryBrush}" Margin="2,18,0,10" />
                 <GridView x:Name="AlbumsGrid" IsItemClickEnabled="True" SelectionMode="None" ItemClick="Album_Click"
+                          ItemContainerStyle="{StaticResource AlbumTileGridItem}"
                           ItemTemplate="{StaticResource AlbumTileTemplate}" />
 
                 <!-- Top songs -->

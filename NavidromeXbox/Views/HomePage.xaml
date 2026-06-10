@@ -8,6 +8,7 @@
         <Style x:Key="Shelf" TargetType="ListView">
             <Setter Property="IsItemClickEnabled" Value="True" />
             <Setter Property="SelectionMode" Value="None" />
+            <Setter Property="ItemContainerStyle" Value="{StaticResource AlbumTileListItem}" />
             <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Enabled" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
             <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />

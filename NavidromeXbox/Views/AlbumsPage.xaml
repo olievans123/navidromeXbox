@@ -28,6 +28,7 @@
         <!-- The GridView scrolls and virtualizes itself; the Load more button and the
              busy/empty states live in its footer so the controller can reach them. -->
         <GridView x:Name="Grid" Grid.Row="1" IsItemClickEnabled="True" SelectionMode="None" ItemClick="Album_Click"
+                  ItemContainerStyle="{StaticResource AlbumTileGridItem}"
                   ItemTemplate="{StaticResource AlbumTileTemplate}" Padding="0,0,0,8">
             <GridView.Footer>
                 <StackPanel>
