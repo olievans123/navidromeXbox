@@ -109,23 +109,31 @@ namespace NavidromeXbox.Services
 
         // ----------------------------------------------------------- queue building
 
+        /// <summary>Build a playback item, or null if the song has no usable stream URL.</summary>
         MediaPlaybackItem BuildItem(Song song)
         {
+            if (song == null) return null;
             // Radio stations carry a ready-to-play URL; everything else streams via /rest/stream.
             var url = song.IsRadio ? song.StreamOverride : AppState.Current.Api.StreamUrl(song.Id);
-            var source = MediaSource.CreateFromUri(new Uri(url));
-            var item = new MediaPlaybackItem(source);
+            if (string.IsNullOrWhiteSpace(url) || !Uri.TryCreate(url, UriKind.Absolute, out var uri)) return null;
+            try
+            {
+                var source = MediaSource.CreateFromUri(uri);
+                var item = new MediaPlaybackItem(source);
 
-            var props = item.GetDisplayProperties();
-            props.Type = MediaPlaybackType.Music;
-            props.MusicProperties.Title = song.Title ?? "";
-            props.MusicProperties.Artist = song.ArtistName ?? "";
-            props.MusicProperties.AlbumTitle = song.AlbumName ?? "";
-            if (song.Track.HasValue) props.MusicProperties.TrackNumber = (uint)song.Track.Value;
-            var cover = AppState.Current.Api.CoverArtUrl(song.CoverArt, 600);
-            if (cover != null) props.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(cover));
-            item.ApplyDisplayProperties(props);
-            return item;
+                var props = item.GetDisplayProperties();
+                props.Type = MediaPlaybackType.Music;
+                props.MusicProperties.Title = song.Title ?? "";
+                props.MusicProperties.Artist = song.ArtistName ?? "";
+                props.MusicProperties.AlbumTitle = song.AlbumName ?? "";
+                if (song.Track.HasValue) props.MusicProperties.TrackNumber = (uint)song.Track.Value;
+                var cover = AppState.Current.Api.CoverArtUrl(song.CoverArt, 600);
+                if (!string.IsNullOrEmpty(cover) && Uri.TryCreate(cover, UriKind.Absolute, out var coverUri))
+                    props.Thumbnail = RandomAccessStreamReference.CreateFromUri(coverUri);
+                item.ApplyDisplayProperties(props);
+                return item;
+            }
+            catch { return null; }
         }
 
         /// <summary>Replace the queue with these songs and start at <paramref name="startIndex"/>.</summary>
@@ -137,14 +145,19 @@ namespace NavidromeXbox.Services
             _list.Items.Clear();
             _songs.Clear();
             Queue.Clear();
-            foreach (var s in songs)
+            int start = 0;
+            for (int i = 0; i < songs.Count; i++)
             {
-                _songs.Add(s);
-                Queue.Add(s);
-                _list.Items.Add(BuildItem(s));
+                var item = BuildItem(songs[i]);
+                if (item == null) continue;            // skip anything with no usable stream
+                if (i <= startIndex) start = _songs.Count;  // remember where the requested track landed
+                _songs.Add(songs[i]);
+                Queue.Add(songs[i]);
+                _list.Items.Add(item);
             }
+            if (_list.Items.Count == 0) return;        // nothing playable
 
-            uint idx = (uint)Math.Max(0, Math.Min(startIndex, songs.Count - 1));
+            uint idx = (uint)Math.Max(0, Math.Min(start, _list.Items.Count - 1));
             try { _list.MoveTo(idx); } catch { }
             _player.Play();
         }
@@ -167,9 +180,11 @@ namespace NavidromeXbox.Services
         /// <summary>Enqueue at the end.</summary>
         public void AddToQueue(Song song)
         {
+            var item = BuildItem(song);
+            if (item == null) return;
             _songs.Add(song);
             Queue.Add(song);
-            _list.Items.Add(BuildItem(song));
+            _list.Items.Add(item);
             if (_list.Items.Count == 1) _player.Play();
         }
 
@@ -178,11 +193,13 @@ namespace NavidromeXbox.Services
         /// <summary>Insert right after the current track.</summary>
         public void PlayNext(Song song)
         {
+            var item = BuildItem(song);
+            if (item == null) return;
             int cur = _list.CurrentItemIndex == uint.MaxValue ? _list.Items.Count - 1 : (int)_list.CurrentItemIndex;
             int at = Math.Max(0, Math.Min(cur + 1, _list.Items.Count));
             _songs.Insert(at, song);
             Queue.Insert(at, song);
-            _list.Items.Insert(at, BuildItem(song));
+            _list.Items.Insert(at, item);
         }
 
         public void RemoveAt(int index)

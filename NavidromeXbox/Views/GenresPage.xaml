@@ -17,10 +17,8 @@
                        FontSize="{StaticResource CaptionSize}" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0" />
         </StackPanel>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <GridView x:Name="Grid" IsItemClickEnabled="True" SelectionMode="None" ItemClick="Genre_Click"
-                      ItemTemplate="{StaticResource GenreTileTemplate}" />
-        </ScrollViewer>
+        <GridView x:Name="Grid" Grid.Row="1" IsItemClickEnabled="True" SelectionMode="None" ItemClick="Genre_Click"
+                  ItemTemplate="{StaticResource GenreTileTemplate}" Padding="0,0,0,8" />
 
         <ProgressRing x:Name="Busy" Grid.Row="1" Width="44" Height="44" IsActive="True"
                       Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />

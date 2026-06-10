@@ -15,6 +15,7 @@ namespace NavidromeXbox.Services
     {
         const string VaultResource = "NavidromeXbox";
         const string VaultUser = "password";
+        const string PwFallbackKey = "pw";   // used only when the credential vault is unavailable
 
         static ApplicationDataContainer Local => ApplicationData.Current.LocalSettings;
 
@@ -135,8 +136,18 @@ namespace NavidromeXbox.Services
         {
             ClearPassword();
             if (string.IsNullOrEmpty(password)) return;
-            var vault = new PasswordVault();
-            vault.Add(new PasswordCredential(VaultResource, VaultUser, password));
+            try
+            {
+                var vault = new PasswordVault();
+                vault.Add(new PasswordCredential(VaultResource, VaultUser, password));
+                Local.Values.Remove(PwFallbackKey);   // vault worked — keep no plaintext copy
+            }
+            catch
+            {
+                // Some Xbox configurations can't reach the credential vault; fall back to the
+                // app's sandboxed local store so the user still stays signed in across launches.
+                Local.Values[PwFallbackKey] = password;
+            }
         }
 
         static string LoadPassword()
@@ -146,9 +157,10 @@ namespace NavidromeXbox.Services
                 var vault = new PasswordVault();
                 var cred = vault.Retrieve(VaultResource, VaultUser);
                 cred.RetrievePassword();
-                return cred.Password;
+                if (!string.IsNullOrEmpty(cred.Password)) return cred.Password;
             }
-            catch { return ""; }
+            catch { /* not in the vault — try the fallback below */ }
+            return Local.Values[PwFallbackKey] as string ?? "";
         }
 
         static void ClearPassword()
@@ -159,6 +171,7 @@ namespace NavidromeXbox.Services
                 foreach (var c in vault.FindAllByResource(VaultResource)) vault.Remove(c);
             }
             catch { /* nothing stored */ }
+            Local.Values.Remove(PwFallbackKey);
         }
     }
 }

@@ -10,10 +10,12 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- Art + info -->
-            <Grid Grid.Row="0" VerticalAlignment="Center">
-                <StackPanel Spacing="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Border Width="380" Height="380" CornerRadius="20" Background="{StaticResource AppSurfaceHighBrush}"
+            <!-- Art + info. A DownOnly Viewbox scales the whole block to fit the available
+                 height on smaller screens, so the art is never clipped at the top. -->
+            <Viewbox Grid.Row="0" Stretch="Uniform" StretchDirection="DownOnly"
+                     HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,4,0,8">
+                <StackPanel Spacing="18" HorizontalAlignment="Center">
+                    <Border Width="360" Height="360" CornerRadius="20" Background="{StaticResource AppSurfaceHighBrush}"
                             HorizontalAlignment="Center">
                         <Grid>
                             <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="96" Foreground="#33FFFFFF"
@@ -21,7 +23,7 @@
                             <Image x:Name="CoverImage" Stretch="UniformToFill" />
                         </Grid>
                     </Border>
-                    <StackPanel HorizontalAlignment="Center" Spacing="4" MaxWidth="760">
+                    <StackPanel HorizontalAlignment="Center" Spacing="4" Width="620">
                         <TextBlock x:Name="TitleText" FontSize="{StaticResource TitleSize}" FontWeight="Bold"
                                    Foreground="{StaticResource TextPrimaryBrush}" TextAlignment="Center"
                                    TextTrimming="CharacterEllipsis" MaxLines="2" />
@@ -33,9 +35,10 @@
                                    TextTrimming="CharacterEllipsis" MaxLines="1" />
                     </StackPanel>
                 </StackPanel>
-            </Grid>
+            </Viewbox>
 
-            <!-- Controls -->
+            <!-- Controls (Stretch + MaxWidth keeps the block centred while the seek bar's
+                 star column still gets a real width). -->
             <StackPanel Grid.Row="1" Spacing="6" Margin="40,12,40,8" MaxWidth="1000" HorizontalAlignment="Stretch">
                 <Grid x:Name="SeekRow" ColumnSpacing="14">
                     <Grid.ColumnDefinitions>

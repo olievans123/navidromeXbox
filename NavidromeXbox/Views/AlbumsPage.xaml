@@ -25,19 +25,22 @@
             </ComboBox>
         </Grid>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" x:Name="Scroller">
-            <StackPanel>
-                <GridView x:Name="Grid" IsItemClickEnabled="True" SelectionMode="None" ItemClick="Album_Click"
-                          ItemTemplate="{StaticResource AlbumTileTemplate}" />
-                <Button x:Name="MoreButton" Style="{StaticResource TileButton}" Content="Load more"
-                        HorizontalContentAlignment="Center" HorizontalAlignment="Center" Margin="0,8,0,24"
-                        Click="More_Click" Visibility="Collapsed" />
-                <ProgressRing x:Name="Busy" Width="40" Height="40" IsActive="False" Margin="0,30,0,30"
-                              Foreground="{StaticResource AccentBrush}" />
-                <TextBlock x:Name="EmptyText" Text="No albums found." Foreground="{StaticResource TextSecondaryBrush}"
-                           FontSize="{StaticResource BodySize}" HorizontalAlignment="Center" Margin="0,40"
-                           Visibility="Collapsed" />
-            </StackPanel>
-        </ScrollViewer>
+        <!-- The GridView scrolls and virtualizes itself; the Load more button and the
+             busy/empty states live in its footer so the controller can reach them. -->
+        <GridView x:Name="Grid" Grid.Row="1" IsItemClickEnabled="True" SelectionMode="None" ItemClick="Album_Click"
+                  ItemTemplate="{StaticResource AlbumTileTemplate}" Padding="0,0,0,8">
+            <GridView.Footer>
+                <StackPanel>
+                    <Button x:Name="MoreButton" Style="{StaticResource TileButton}" Content="Load more"
+                            HorizontalContentAlignment="Center" HorizontalAlignment="Center" Margin="0,8,0,24"
+                            Click="More_Click" Visibility="Collapsed" />
+                    <ProgressRing x:Name="Busy" Width="40" Height="40" IsActive="False" Margin="0,30,0,30"
+                                  Foreground="{StaticResource AccentBrush}" />
+                    <TextBlock x:Name="EmptyText" Text="No albums found." Foreground="{StaticResource TextSecondaryBrush}"
+                               FontSize="{StaticResource BodySize}" HorizontalAlignment="Center" Margin="0,40"
+                               Visibility="Collapsed" />
+                </StackPanel>
+            </GridView.Footer>
+        </GridView>
     </Grid>
 </Page>
