@@ -4,23 +4,37 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Grid Padding="56,24,56,24">
-        <!-- The whole player is one vertically-centred column. Centring leaves a margin above
-             and below that absorbs TV overscan, so the art and controls never clip at an edge. -->
-        <StackPanel x:Name="PlayerRoot" Width="560" Spacing="18"
-                    HorizontalAlignment="Center" VerticalAlignment="Center">
+        <!-- A row-based Grid (NOT a centred StackPanel): the art lives in a flexible * row that
+             shrinks to whatever height is left, so the title/seek/controls in the Auto rows below
+             are ALWAYS on screen — it can't overflow and clip the controls regardless of the
+             effective resolution. -->
+        <Grid x:Name="PlayerRoot" MaxWidth="620" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-            <Border Width="460" Height="460" CornerRadius="18" HorizontalAlignment="Center"
-                    Background="{StaticResource AppSurfaceHighBrush}"
-                    BorderBrush="{StaticResource HairlineBrush}" BorderThickness="1">
-                <Grid>
-                    <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="120" Foreground="#26FFFFFF"
-                               HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    <Image x:Name="CoverImage" Stretch="UniformToFill" />
-                </Grid>
-            </Border>
+            <!-- Album art: capped at 460, but scaled DOWN by the Viewbox to fit the leftover row
+                 height so it never pushes the controls off a short screen. -->
+            <Viewbox Grid.Row="0" StretchDirection="DownOnly" MaxHeight="460" Margin="0,0,0,18"
+                     HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border Width="460" Height="460" CornerRadius="18"
+                        Background="{StaticResource AppSurfaceHighBrush}"
+                        BorderBrush="{StaticResource HairlineBrush}" BorderThickness="1">
+                    <Grid>
+                        <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="120" Foreground="#26FFFFFF"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Image x:Name="CoverImage" Stretch="UniformToFill" />
+                    </Grid>
+                </Border>
+            </Viewbox>
 
-            <StackPanel HorizontalAlignment="Center" Spacing="4">
-                <TextBlock x:Name="TitleText" FontSize="38" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"
+            <StackPanel Grid.Row="1" HorizontalAlignment="Center" Spacing="4">
+                <TextBlock x:Name="TitleText" FontSize="34" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"
                            TextAlignment="Center" TextTrimming="CharacterEllipsis" MaxLines="2" />
                 <TextBlock x:Name="ArtistText" FontSize="{StaticResource SubtitleSize}" Foreground="{StaticResource AccentLightBrush}"
                            TextAlignment="Center" TextTrimming="CharacterEllipsis" MaxLines="1" />
@@ -28,7 +42,7 @@
                            TextAlignment="Center" TextTrimming="CharacterEllipsis" MaxLines="1" />
             </StackPanel>
 
-            <Grid x:Name="SeekRow" ColumnSpacing="16">
+            <Grid Grid.Row="2" x:Name="SeekRow" ColumnSpacing="16" Margin="0,16,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -44,10 +58,10 @@
             </Grid>
 
             <!-- Live radio has no seekable timeline; show a LIVE badge instead. -->
-            <TextBlock x:Name="LiveText" Text="&#x25CF;  LIVE" Visibility="Collapsed" HorizontalAlignment="Center"
-                       FontSize="{StaticResource CaptionSize}" FontWeight="SemiBold" Foreground="{StaticResource LiveBrush}" />
+            <TextBlock Grid.Row="3" x:Name="LiveText" Text="&#x25CF;  LIVE" Visibility="Collapsed" HorizontalAlignment="Center"
+                       Margin="0,8,0,0" FontSize="{StaticResource CaptionSize}" FontWeight="SemiBold" Foreground="{StaticResource LiveBrush}" />
 
-            <StackPanel Orientation="Horizontal" Spacing="22" HorizontalAlignment="Center">
+            <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="22" HorizontalAlignment="Center" Margin="0,18,0,0">
                 <Button x:Name="ShuffleBtn" Style="{StaticResource IconButton}" Width="54" Height="54" CornerRadius="27"
                         VerticalAlignment="Center" FontSize="18" Content="&#xE8B1;" Click="Shuffle_Click" ToolTipService.ToolTip="Shuffle" />
                 <Button x:Name="PrevBtn" Style="{StaticResource TransportButton}" Width="60" Height="60" CornerRadius="30"
@@ -61,14 +75,14 @@
                         VerticalAlignment="Center" FontSize="18" Click="Repeat_Click" ToolTipService.ToolTip="Repeat" />
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Spacing="22" HorizontalAlignment="Center">
+            <StackPanel Grid.Row="5" Orientation="Horizontal" Spacing="22" HorizontalAlignment="Center" Margin="0,16,0,0">
                 <Button x:Name="StarBtn" Style="{StaticResource IconButton}" Width="50" Height="50" CornerRadius="25"
                         VerticalAlignment="Center" FontSize="18" Click="Star_Click" Foreground="{StaticResource AccentMagentaBrush}"
                         ToolTipService.ToolTip="Star" />
                 <Button x:Name="QueueBtn" Style="{StaticResource IconButton}" Width="50" Height="50" CornerRadius="25"
                         VerticalAlignment="Center" FontSize="18" Content="&#xE90B;" Click="Queue_Click" ToolTipService.ToolTip="Queue" />
             </StackPanel>
-        </StackPanel>
+        </Grid>
 
         <!-- Empty state -->
         <StackPanel x:Name="EmptyState" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12" Visibility="Collapsed">
