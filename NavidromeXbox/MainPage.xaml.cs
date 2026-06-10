@@ -25,9 +25,10 @@ namespace NavidromeXbox
             this.Loaded += OnLoaded;
             // B on the controller (and the system back gesture on PC) walks the page history.
             SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
-            // TVs overscan: keep all content inside the title-safe area so nothing clips at the edges.
-            if (GamepadHelpers.IsRunningOnXbox)
-                RootGrid.Padding = new Thickness(24, 27, 24, 24);
+            // The full Now Playing screen has its own controls, so hide the docked mini player there.
+            ContentFrame.Navigated += (s, e) =>
+                MiniPlayer.Visibility = e.SourcePageType == typeof(NowPlayingPage)
+                    ? Visibility.Collapsed : Visibility.Visible;
         }
 
         void OnLoaded(object sender, RoutedEventArgs e)

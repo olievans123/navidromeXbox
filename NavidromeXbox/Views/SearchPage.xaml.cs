@@ -11,7 +11,7 @@ namespace NavidromeXbox.Views
 {
     public sealed partial class SearchPage : Page
     {
-        readonly DispatcherTimer _debounce = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(400) };
+        readonly DispatcherTimer _debounce = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
         readonly List<Song> _songs = new List<Song>();
         string _pending;
 
@@ -38,7 +38,9 @@ namespace NavidromeXbox.Views
             EmptyText.Visibility = Visibility.Collapsed;
             try
             {
-                var res = await AppState.Current.Api.Search3Async(query);
+                // Keep the result set small: each album/artist tile pulls a cover image, so a
+                // lighter page renders far faster as the user types. Refining the query narrows it.
+                var res = await AppState.Current.Api.Search3Async(query, 12);
                 if (query != _pending) return;   // a newer query superseded this one mid-flight
 
                 ArtistResults.ItemsSource = res.Artists;

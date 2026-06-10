@@ -3,44 +3,37 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Grid Padding="56,24,40,16">
+    <Grid Padding="56,24,56,16">
         <Grid x:Name="PlayerRoot">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- Art + info. A DownOnly Viewbox scales the whole block to fit the available
-                 height on smaller screens, so the art is never clipped at the top. -->
-            <Viewbox Grid.Row="0" Stretch="Uniform" StretchDirection="DownOnly"
-                     HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,4,0,8">
-                <StackPanel Spacing="18" HorizontalAlignment="Center">
-                    <Border Width="360" Height="360" CornerRadius="20" Background="{StaticResource AppSurfaceHighBrush}"
-                            HorizontalAlignment="Center">
-                        <Grid>
-                            <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="96" Foreground="#33FFFFFF"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <Image x:Name="CoverImage" Stretch="UniformToFill" />
-                        </Grid>
-                    </Border>
-                    <StackPanel HorizontalAlignment="Center" Spacing="4" Width="620">
-                        <TextBlock x:Name="TitleText" FontSize="{StaticResource TitleSize}" FontWeight="Bold"
-                                   Foreground="{StaticResource TextPrimaryBrush}" TextAlignment="Center"
-                                   TextTrimming="CharacterEllipsis" MaxLines="2" />
-                        <TextBlock x:Name="ArtistText" FontSize="{StaticResource SubtitleSize}"
-                                   Foreground="{StaticResource AccentLightBrush}" TextAlignment="Center"
-                                   TextTrimming="CharacterEllipsis" MaxLines="1" />
-                        <TextBlock x:Name="AlbumText" FontSize="{StaticResource BodySize}"
-                                   Foreground="{StaticResource TextSecondaryBrush}" TextAlignment="Center"
-                                   TextTrimming="CharacterEllipsis" MaxLines="1" />
-                    </StackPanel>
+            <!-- Hero: large cover + track info, vertically centred in the remaining space. -->
+            <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="26">
+                <Border Width="460" Height="460" CornerRadius="18" HorizontalAlignment="Center"
+                        Background="{StaticResource AppSurfaceHighBrush}"
+                        BorderBrush="{StaticResource HairlineBrush}" BorderThickness="1">
+                    <Grid>
+                        <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="120" Foreground="#26FFFFFF"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Image x:Name="CoverImage" Stretch="UniformToFill" />
+                    </Grid>
+                </Border>
+                <StackPanel HorizontalAlignment="Center" Spacing="6" MaxWidth="900">
+                    <TextBlock x:Name="TitleText" FontSize="40" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"
+                               TextAlignment="Center" TextTrimming="CharacterEllipsis" MaxLines="2" />
+                    <TextBlock x:Name="ArtistText" FontSize="{StaticResource SubtitleSize}" Foreground="{StaticResource AccentLightBrush}"
+                               TextAlignment="Center" TextTrimming="CharacterEllipsis" MaxLines="1" />
+                    <TextBlock x:Name="AlbumText" FontSize="{StaticResource BodySize}" Foreground="{StaticResource TextSecondaryBrush}"
+                               TextAlignment="Center" TextTrimming="CharacterEllipsis" MaxLines="1" />
                 </StackPanel>
-            </Viewbox>
+            </StackPanel>
 
-            <!-- Controls (Stretch + MaxWidth keeps the block centred while the seek bar's
-                 star column still gets a real width). -->
-            <StackPanel Grid.Row="1" Spacing="6" Margin="40,12,40,8" MaxWidth="1000" HorizontalAlignment="Stretch">
-                <Grid x:Name="SeekRow" ColumnSpacing="14">
+            <!-- Controls -->
+            <StackPanel Grid.Row="1" Spacing="10" Margin="0,18,0,0" MaxWidth="900" HorizontalAlignment="Stretch">
+                <Grid x:Name="SeekRow" ColumnSpacing="16">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -57,28 +50,28 @@
 
                 <!-- Live radio has no seekable timeline; show a LIVE badge instead. -->
                 <TextBlock x:Name="LiveText" Text="&#x25CF;  LIVE" Visibility="Collapsed" HorizontalAlignment="Center"
-                           FontSize="{StaticResource CaptionSize}" FontWeight="SemiBold" Foreground="{StaticResource LiveBrush}" Margin="0,4,0,4" />
+                           FontSize="{StaticResource CaptionSize}" FontWeight="SemiBold" Foreground="{StaticResource LiveBrush}" Margin="0,2,0,2" />
 
-                <StackPanel Orientation="Horizontal" Spacing="16" HorizontalAlignment="Center" Margin="0,4,0,0">
-                    <Button x:Name="ShuffleBtn" Style="{StaticResource IconButton}" Width="52" Height="52" CornerRadius="26"
+                <StackPanel Orientation="Horizontal" Spacing="22" HorizontalAlignment="Center" Margin="0,2,0,0">
+                    <Button x:Name="ShuffleBtn" Style="{StaticResource IconButton}" Width="54" Height="54" CornerRadius="27"
                             VerticalAlignment="Center" FontSize="18" Content="&#xE8B1;" Click="Shuffle_Click" ToolTipService.ToolTip="Shuffle" />
-                    <Button x:Name="PrevBtn" Style="{StaticResource TransportButton}" VerticalAlignment="Center" FontSize="22"
-                            Content="&#xE892;" Click="Prev_Click" ToolTipService.ToolTip="Previous" />
-                    <Button x:Name="PlayBtn" Style="{StaticResource TransportButton}" Width="72" Height="72" CornerRadius="36"
-                            VerticalAlignment="Center" FontSize="26" Background="{StaticResource AccentBrush}" Foreground="#06201E"
+                    <Button x:Name="PrevBtn" Style="{StaticResource TransportButton}" Width="60" Height="60" CornerRadius="30"
+                            VerticalAlignment="Center" FontSize="22" Content="&#xE892;" Click="Prev_Click" ToolTipService.ToolTip="Previous" />
+                    <Button x:Name="PlayBtn" Style="{StaticResource TransportButton}" Width="82" Height="82" CornerRadius="41"
+                            VerticalAlignment="Center" FontSize="30" Background="{StaticResource AccentBrush}" Foreground="#06201E"
                             Click="PlayPause_Click" ToolTipService.ToolTip="Play / Pause" />
-                    <Button x:Name="NextBtn" Style="{StaticResource TransportButton}" VerticalAlignment="Center" FontSize="22"
-                            Content="&#xE893;" Click="Next_Click" ToolTipService.ToolTip="Next" />
-                    <Button x:Name="RepeatBtn" Style="{StaticResource IconButton}" Width="52" Height="52" CornerRadius="26"
+                    <Button x:Name="NextBtn" Style="{StaticResource TransportButton}" Width="60" Height="60" CornerRadius="30"
+                            VerticalAlignment="Center" FontSize="22" Content="&#xE893;" Click="Next_Click" ToolTipService.ToolTip="Next" />
+                    <Button x:Name="RepeatBtn" Style="{StaticResource IconButton}" Width="54" Height="54" CornerRadius="27"
                             VerticalAlignment="Center" FontSize="18" Click="Repeat_Click" ToolTipService.ToolTip="Repeat" />
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Spacing="16" HorizontalAlignment="Center" Margin="0,6,0,0">
-                    <Button x:Name="StarBtn" Style="{StaticResource IconButton}" Width="48" Height="48" CornerRadius="24"
-                            FontSize="18" Click="Star_Click" Foreground="{StaticResource AccentMagentaBrush}"
+                <StackPanel Orientation="Horizontal" Spacing="22" HorizontalAlignment="Center" Margin="0,4,0,0">
+                    <Button x:Name="StarBtn" Style="{StaticResource IconButton}" Width="50" Height="50" CornerRadius="25"
+                            VerticalAlignment="Center" FontSize="18" Click="Star_Click" Foreground="{StaticResource AccentMagentaBrush}"
                             ToolTipService.ToolTip="Star" />
-                    <Button x:Name="QueueBtn" Style="{StaticResource IconButton}" Width="48" Height="48" CornerRadius="24"
-                            FontSize="18" Content="&#xE90B;" Click="Queue_Click" ToolTipService.ToolTip="Queue" />
+                    <Button x:Name="QueueBtn" Style="{StaticResource IconButton}" Width="50" Height="50" CornerRadius="25"
+                            VerticalAlignment="Center" FontSize="18" Content="&#xE90B;" Click="Queue_Click" ToolTipService.ToolTip="Queue" />
                 </StackPanel>
             </StackPanel>
         </Grid>
