@@ -39,6 +39,7 @@ namespace NavidromeXbox.Views
             NavRadioToggle.IsOn = Settings.NavRadio;
             NavSearchToggle.IsOn = Settings.NavSearch;
             _ready = true;
+            BitrateBox.Focus(FocusState.Programmatic);   // land gamepad focus on the first control
 
             var user = await AppState.Current.EnsureUserAsync();
             VersionText.Text = user != null ? $"Server API {user.ServerVersion}" : "";

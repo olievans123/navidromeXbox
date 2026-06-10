@@ -21,7 +21,9 @@ namespace NavidromeXbox.Views
             QueueList.ItemsSource = Player.Queue;
             Player.Queue.CollectionChanged += Queue_Changed;
             UpdateEmpty();
-            QueueList.FocusFirstItem();
+            // Don't focus an empty list (no target); fall back to the Clear button if it's live.
+            if (Player.Queue.Count > 0) QueueList.FocusFirstItem();
+            else if (ClearButton.IsEnabled) ClearButton.Focus(FocusState.Programmatic);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

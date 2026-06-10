@@ -28,7 +28,7 @@ namespace NavidromeXbox.Views
                 EmptyText.Text = "No radio stations yet.\nAdd them in the Navidrome web UI (Settings → Internet Radio).";
                 EmptyText.Visibility = stations.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 _loaded = true;
-                StationList.FocusFirstItem();
+                if (stations.Count > 0) StationList.FocusFirstItem();   // empty list = no focus target
             }
             catch (Exception ex)
             {
