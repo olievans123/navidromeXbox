@@ -230,6 +230,7 @@
     <Compile Include="ViewModels\ObservableObject.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="Helpers\GamepadHelpers.cs" />
+    <Compile Include="Helpers\ItemContextMenu.cs" />
     <Compile Include="Helpers\Hashing.cs" />
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\Format.cs" />

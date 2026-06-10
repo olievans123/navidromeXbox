@@ -1,4 +1,5 @@
 using System;
+using NavidromeXbox.Helpers;
 using NavidromeXbox.Models;
 using NavidromeXbox.Services;
 using Windows.UI.Xaml;
@@ -22,6 +23,7 @@ namespace NavidromeXbox.Views
                 var lists = await AppState.Current.Api.GetPlaylistsAsync();
                 Grid.ItemsSource = lists;
                 EmptyText.Visibility = lists.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                Grid.FocusFirstItem();
             }
             catch (Exception ex)
             {

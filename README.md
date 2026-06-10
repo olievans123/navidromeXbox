@@ -121,9 +121,16 @@ to the console from your browser — see [BUILD.md](BUILD.md).*
 | Move focus | D‑pad / Left stick | Arrow keys / Tab |
 | Activate | **A** | Enter |
 | Back | **B** | Esc |
-| Open / close the menu | **Menu** (☰) | — |
-| Play / pause, skip | Transport buttons, or the **Xbox guide / remote** | — |
-| Seek | Focus the progress bar, **left/right** | Arrow keys |
+| Navigation drawer | **View** (⧉), or the on‑screen ☰ | — |
+| Options on the focused item | **Menu** (☰) — play, play next, add to queue, go to album/artist, star | — |
+| Now Playing | **Y** | — |
+| Play / pause | **X**, the transport buttons, or the **Xbox guide / remote** | — |
+| Previous / next track | **LB / RB**, or the **Xbox guide / remote** | — |
+| Seek | Focus the progress bar, **A** to engage, then **left/right** | Arrow keys |
+
+Focus always lands on real content when a page opens, so the stick is never dead. Every list
+and grid scrolls and virtualizes itself, and the **Menu** button opens a context menu on
+whatever is focused — songs, albums, artists, and playlists each get the relevant actions.
 
 ---
 
@@ -144,9 +151,10 @@ variant from a single source image.
 - [x] **M3 — Playback**: full Now Playing, seek, shuffle/repeat, queue management, scrobbling.
 - [x] **M4 — Account**: transcoding prefs, server info, secure sign-out.
 - [x] **Discover, pt. 2**: internet radio, customizable Home shelves & side menu, background playback.
-- [ ] **Long tail**: playlist editing on-device, per-song context menu (play next / add to playlist),
-      song star toggles inline, offline cache, podcasts, resume-queue on launch,
-      lyrics (`getLyrics`), ARM64 build.
+- [x] **Controller**: full gamepad scheme (View/Menu/Y/X/LB/RB), per-item context menus
+      (play / play next / add to queue / go to album·artist / star), focus-first navigation.
+- [ ] **Long tail**: playlist editing on-device, add-to-playlist, inline live star refresh,
+      offline cache, podcasts, resume-queue on launch, lyrics (`getLyrics`), ARM64 build.
 
 ---
 

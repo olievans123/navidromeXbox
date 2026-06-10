@@ -1,4 +1,5 @@
 using System;
+using NavidromeXbox.Helpers;
 using NavidromeXbox.Models;
 using NavidromeXbox.Services;
 using Windows.UI.Xaml;
@@ -28,6 +29,7 @@ namespace NavidromeXbox.Views
                 EmptyText.Text = "No genres found.";
                 EmptyText.Visibility = genres.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 _loaded = true;
+                Grid.FocusFirstItem();
             }
             catch (Exception ex)
             {

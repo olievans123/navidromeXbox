@@ -1,4 +1,5 @@
 using System;
+using NavidromeXbox.Helpers;
 using NavidromeXbox.Models;
 using NavidromeXbox.Services;
 using Windows.UI.Xaml;
@@ -27,6 +28,7 @@ namespace NavidromeXbox.Views
                 EmptyText.Text = "No radio stations yet.\nAdd them in the Navidrome web UI (Settings → Internet Radio).";
                 EmptyText.Visibility = stations.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 _loaded = true;
+                StationList.FocusFirstItem();
             }
             catch (Exception ex)
             {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using NavidromeXbox.Helpers;
 using NavidromeXbox.Models;
 using NavidromeXbox.Services;
 using Windows.UI.Xaml;
@@ -69,6 +70,7 @@ namespace NavidromeXbox.Views
 
                 _loaded = true;
                 _loadedSig = ShelfSignature();
+                FocusFirstShelf();   // land the controller on a cover, not nothing
             }
             catch (Exception ex)
             {
@@ -79,6 +81,15 @@ namespace NavidromeXbox.Views
             {
                 Busy.IsActive = false;
             }
+        }
+
+        void FocusFirstShelf()
+        {
+            if (Settings.HomeNewest && NewestShelf.Items.Count > 0) NewestShelf.FocusFirstItem();
+            else if (Settings.HomeRecent && RecentShelf.Items.Count > 0) RecentShelf.FocusFirstItem();
+            else if (Settings.HomeFrequent && FrequentShelf.Items.Count > 0) FrequentShelf.FocusFirstItem();
+            else if (Settings.HomeRandom && RandomShelf.Items.Count > 0) RandomShelf.FocusFirstItem();
+            else if (Settings.HomeStarred && StarredShelf.Items.Count > 0) StarredShelf.FocusFirstItem();
         }
 
         static Visibility Vis(bool on) => on ? Visibility.Visible : Visibility.Collapsed;

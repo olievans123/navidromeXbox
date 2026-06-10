@@ -73,25 +73,49 @@ namespace NavidromeXbox
             // Otherwise leave it unhandled so B at the root minimizes to the dashboard.
         }
 
-        // Gamepad Menu/View toggles the nav from anywhere; B / Esc closes it.
+        // App-wide controller scheme:
+        //   View  → toggle the nav drawer            Menu → context menu on the focused item
+        //   Y     → jump to Now Playing               X    → play / pause
+        //   LB/RB → previous / next track             B / Esc → back (B via BackRequested)
         void Page_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            bool signedIn = MenuButton.Visibility == Visibility.Visible;
-            if ((e.Key == VirtualKey.GamepadMenu || e.Key == VirtualKey.GamepadView) && signedIn)
-            {
-                SetPane(!NavSplit.IsPaneOpen);
-                e.Handled = true;
-            }
-            else if (NavSplit.IsPaneOpen && (e.Key == VirtualKey.GamepadB || e.Key == VirtualKey.Escape))
+            // Esc mirrors B on the keyboard; gamepad B is handled once via OnBackRequested,
+            // so it isn't also caught here (which would close the pane AND go back).
+            if (NavSplit.IsPaneOpen && e.Key == VirtualKey.Escape)
             {
                 ClosePane();
                 e.Handled = true;
+                return;
             }
-            else if (e.Key == VirtualKey.Escape && ContentFrame.CanGoBack)
+
+            bool signedIn = MenuButton.Visibility == Visibility.Visible;
+            if (!signedIn) return;
+
+            switch (e.Key)
             {
-                // Keyboard parity with B; GamepadB itself arrives via BackRequested.
-                ContentFrame.GoBack();
-                e.Handled = true;
+                case VirtualKey.GamepadView:
+                    SetPane(!NavSplit.IsPaneOpen);
+                    e.Handled = true;
+                    return;
+                case VirtualKey.GamepadMenu:
+                    // Options on the focused item; if nothing actionable is focused, open the drawer.
+                    if (!ItemContextMenu.ShowForFocused()) SetPane(!NavSplit.IsPaneOpen);
+                    e.Handled = true;
+                    return;
+                case VirtualKey.Escape:
+                    if (ContentFrame.CanGoBack) { ContentFrame.GoBack(); e.Handled = true; }
+                    return;
+            }
+
+            // Media accelerators — never while a text field is focused, so typing isn't hijacked.
+            if (GamepadHelpers.IsTextInputFocused()) return;
+            var player = AppState.Current.Playback;
+            switch (e.Key)
+            {
+                case VirtualKey.GamepadY: OpenNowPlaying(); e.Handled = true; break;
+                case VirtualKey.GamepadX: player.TogglePlayPause(); e.Handled = true; break;
+                case VirtualKey.GamepadLeftShoulder: player.Previous(); e.Handled = true; break;
+                case VirtualKey.GamepadRightShoulder: player.Next(); e.Handled = true; break;
             }
         }
 

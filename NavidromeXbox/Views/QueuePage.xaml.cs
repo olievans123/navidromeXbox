@@ -1,3 +1,4 @@
+using NavidromeXbox.Helpers;
 using NavidromeXbox.Models;
 using NavidromeXbox.Services;
 using Windows.UI.Xaml;
@@ -20,6 +21,7 @@ namespace NavidromeXbox.Views
             QueueList.ItemsSource = Player.Queue;
             Player.Queue.CollectionChanged += Queue_Changed;
             UpdateEmpty();
+            QueueList.FocusFirstItem();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NavidromeXbox.Helpers;
 using NavidromeXbox.Models;
 using NavidromeXbox.Services;
 using Windows.UI.Xaml;
@@ -32,6 +33,7 @@ namespace NavidromeXbox.Views
                 EmptyText.Text = "No artists found.";
                 EmptyText.Visibility = all.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 _loaded = true;
+                ArtistsGrid.FocusFirstItem();
             }
             catch (Exception ex)
             {

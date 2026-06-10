@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using NavidromeXbox.Helpers;
 using NavidromeXbox.Models;
 using NavidromeXbox.Services;
 using Windows.UI.Xaml;
@@ -27,7 +28,11 @@ namespace NavidromeXbox.Views
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             _ready = true;
-            if (_albums.Count == 0) await ReloadAsync();
+            if (_albums.Count == 0)
+            {
+                await ReloadAsync();
+                Grid.FocusFirstItem();   // drop focus onto the first album
+            }
         }
 
         async void Sort_Changed(object sender, SelectionChangedEventArgs e)
